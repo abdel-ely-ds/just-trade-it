@@ -28,6 +28,5 @@ class AnalysisNotAllowedError(Exception):
         self.analysis_type = analysis_type
         self.message = message
         super().__init__(
-            self.message.format(self.analysis_type,
-                                ALLOWED_ANALYSIS_TYPES.keys())
+            self.message.format(self.analysis_type, ALLOWED_ANALYSIS_TYPES.keys())
         )

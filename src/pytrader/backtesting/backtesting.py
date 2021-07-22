@@ -128,8 +128,7 @@ class Strategy(metaclass=ABCMeta):
                 self.sma = self.I(ta.SMA, self.data.Close, self.n_sma)
         """
         if name is None:
-            params = ",".join(
-                filter(None, map(_as_str, chain(args, kwargs.values()))))
+            params = ",".join(filter(None, map(_as_str, chain(args, kwargs.values()))))
             func_name = _as_str(func)
             name = f"{func_name}({params})" if params else f"{func_name}"
         else:
@@ -141,8 +140,7 @@ class Strategy(metaclass=ABCMeta):
         try:
             value = func(*args, **kwargs)
         except Exception as e:
-            raise RuntimeError(
-                f'Indicator "{name}" errored with exception: {e}')
+            raise RuntimeError(f'Indicator "{name}" errored with exception: {e}')
 
         if isinstance(value, pd.DataFrame):
             value = value.values.T
@@ -588,8 +586,7 @@ class Trade:
     def close(self, portion: float = 1.0):
         """Place new `Order` to close `portion` of the trade at next market price."""
         assert 0 < portion <= 1, "portion must be a fraction between 0 and 1"
-        size = copysign(
-            max(1, round(abs(self.__size) * portion)), -self.__size)
+        size = copysign(max(1, round(abs(self.__size) * portion)), -self.__size)
         order = Order(self.__broker, size, parent_trade=self)
         self.__broker.orders.insert(0, order)
 
@@ -826,8 +823,7 @@ class _Broker:
     @property
     def margin_available(self) -> float:
         # From https://github.com/QuantConnect/Lean/pull/3768
-        margin_used = sum(
-            trade.value / self._leverage for trade in self.trades)
+        margin_used = sum(trade.value / self._leverage for trade in self.trades)
         return max(0, self.equity - margin_used)
 
     def next(self):
@@ -916,8 +912,7 @@ class _Broker:
                 _prev_size = trade.size
                 # If order.size is "greater" than trade.size, this order is a trade.close()
                 # order and part of the trade was already closed beforehand
-                size = copysign(
-                    min(abs(_prev_size), abs(order.size)), order.size)
+                size = copysign(min(abs(_prev_size), abs(order.size)), order.size)
                 # If this trade isn't already closed (e.g. on multiple `trade.close(.5)` calls)
                 if trade in self.trades:
                     self._reduce_trade(trade, price, size, time_index)
@@ -1045,8 +1040,7 @@ class _Broker:
         if trade._tp_order:
             self.orders.remove(trade._tp_order)
 
-        self.closed_trades.append(trade._replace(
-            exit_price=price, exit_bar=time_index))
+        self.closed_trades.append(trade._replace(exit_price=price, exit_bar=time_index))
         self._cash += trade.pl
 
     def _open_trade(
@@ -1156,8 +1150,7 @@ class Backtest:
             )
         ):
             try:
-                data.index = pd.to_datetime(
-                    data.index, infer_datetime_format=True)
+                data.index = pd.to_datetime(data.index, infer_datetime_format=True)
             except ValueError:
                 pass
 
@@ -1321,8 +1314,7 @@ class Backtest:
         random_state: int = None,
         **kwargs,
     ) -> Union[
-        pd.Series, Tuple[pd.Series,
-                         pd.Series], Tuple[pd.Series, pd.Series, dict]
+        pd.Series, Tuple[pd.Series, pd.Series], Tuple[pd.Series, pd.Series, dict]
     ]:
         """
         Optimize strategy parameters to an optimal combination.
@@ -1425,8 +1417,7 @@ class Backtest:
             )
 
         if return_optimization and method != "skopt":
-            raise ValueError(
-                "return_optimization=True only valid if method='skopt'")
+            raise ValueError("return_optimization=True only valid if method='skopt'")
 
         def _tuple(x):
             return x if isinstance(x, Sequence) and not isinstance(x, str) else (x,)
@@ -1474,8 +1465,7 @@ class Backtest:
                 if constraint(params) and rand() <= grid_frac  # type: ignore
             ]
             if not param_combos:
-                raise ValueError(
-                    "No admissible parameter combinations to test")
+                raise ValueError("No admissible parameter combinations to test")
 
             if len(param_combos) > 300:
                 warnings.warn(
@@ -1495,7 +1485,7 @@ class Backtest:
             def _batch(seq):
                 n = np.clip(len(seq) // (os.cpu_count() or 1), 5, 300)
                 for i in range(0, len(seq), n):
-                    yield seq[i: i + n]
+                    yield seq[i : i + n]
 
             # Save necessary objects into "global" state; pass into concurrent executor
             # (and thus pickle) nothing but two numbers; receive nothing but numbers.
@@ -1504,7 +1494,10 @@ class Backtest:
             backtest_uuid = np.random.random()
             param_batches = list(_batch(param_combos))
             Backtest._mp_backtests[backtest_uuid] = (
-                self, param_batches, maximize)  # type: ignore
+                self,
+                param_batches,
+                maximize,
+            )  # type: ignore
             try:
                 # If multiprocessing start method is 'fork' (i.e. on POSIX), use
                 # a pool of processes to compute results in parallel.
@@ -1512,8 +1505,7 @@ class Backtest:
                 if mp.get_start_method(allow_none=False) == "fork":
                     with ProcessPoolExecutor() as executor:
                         futures = [
-                            executor.submit(Backtest._mp_task,
-                                            backtest_uuid, i)
+                            executor.submit(Backtest._mp_task, backtest_uuid, i)
                             for i in range(len(param_batches))
                         ]
                         for future in _tqdm(as_completed(futures), total=len(futures)):
@@ -1529,8 +1521,7 @@ class Backtest:
                             "set multiprocessing start method to 'fork'."
                         )
                     for batch_index in _tqdm(range(len(param_batches))):
-                        _, values = Backtest._mp_task(
-                            backtest_uuid, batch_index)
+                        _, values = Backtest._mp_task(backtest_uuid, batch_index)
                         for value, params in zip(values, param_batches[batch_index]):
                             heatmap[tuple(params.values())] = value
             finally:
@@ -1550,8 +1541,7 @@ class Backtest:
             return stats
 
         def _optimize_skopt() -> Union[
-            pd.Series, Tuple[pd.Series,
-                             pd.Series], Tuple[pd.Series, pd.Series, dict]
+            pd.Series, Tuple[pd.Series, pd.Series], Tuple[pd.Series, pd.Series, dict]
         ]:
             try:
                 from skopt import forest_minimize
@@ -1592,8 +1582,7 @@ class Backtest:
                     )
                 else:
                     dimensions.append(
-                        Categorical(values.tolist(), name=key,
-                                    transform="onehot")
+                        Categorical(values.tolist(), name=key, transform="onehot")
                     )
 
             # Avoid recomputing re-evaluations:
@@ -1662,8 +1651,7 @@ class Backtest:
         elif method == "skopt":
             output = _optimize_skopt()
         else:
-            raise ValueError(
-                f"Method should be 'grid' or 'skopt', not {method!r}")
+            raise ValueError(f"Method should be 'grid' or 'skopt', not {method!r}")
         return output
 
     @staticmethod
@@ -1689,7 +1677,7 @@ class Backtest:
             dd.index.__getitem__
         )
         df["peak_dd"] = df.apply(
-            lambda row: dd.iloc[row["prev"]: row["iloc"] + 1].max(), axis=1
+            lambda row: dd.iloc[row["prev"] : row["iloc"] + 1].max(), axis=1
         )
         df = df.reindex(dd.index)
         return df["duration"], df["peak_dd"]
@@ -1738,8 +1726,7 @@ class Backtest:
             if not isinstance(value, pd.Timedelta):
                 return value
             resolution = (
-                getattr(_period, "resolution_string",
-                        None) or _period.resolution
+                getattr(_period, "resolution_string", None) or _period.resolution
             )
             return value.ceil(resolution)
 
@@ -1750,7 +1737,7 @@ class Backtest:
 
         have_position = np.repeat(0, len(index))
         for t in trades:
-            have_position[t.entry_bar: t.exit_bar + 1] = 1  # type: ignore
+            have_position[t.entry_bar : t.exit_bar + 1] = 1  # type: ignore
 
         s.loc["Exposure Time [%]"] = (
             have_position.mean() * 100
@@ -1759,8 +1746,7 @@ class Backtest:
         s.loc["Equity Peak [$]"] = equity.max()
         s.loc["Return [%]"] = (equity[-1] - equity[0]) / equity[0] * 100
         c = data.Close.values
-        s.loc["Buy & Hold Return [%]"] = (
-            c[-1] - c[0]) / c[0] * 100  # long-only return
+        s.loc["Buy & Hold Return [%]"] = (c[-1] - c[0]) / c[0] * 100  # long-only return
 
         def geometric_mean(returns):
             returns = returns.fillna(0) + 1
@@ -1772,8 +1758,7 @@ class Backtest:
 
         day_returns = gmean_day_return = annual_trading_days = np.array(np.nan)
         if index.is_all_dates:
-            day_returns = equity_df["Equity"].resample(
-                "D").last().dropna().pct_change()
+            day_returns = equity_df["Equity"].resample("D").last().dropna().pct_change()
             gmean_day_return = geometric_mean(day_returns)
             annual_trading_days = (
                 365
@@ -1804,8 +1789,7 @@ class Backtest:
         # Our Sharpe mismatches `empyrical.sharpe_ratio()` because they use arithmetic mean return
         # and simple standard deviation
         s.loc["Sharpe Ratio"] = np.clip(
-            s.loc["Return (Ann.) [%]"] /
-                           (s.loc["Volatility (Ann.) [%]"] or np.nan),
+            s.loc["Return (Ann.) [%]"] / (s.loc["Volatility (Ann.) [%]"] or np.nan),
             0,
             np.inf,
         )  # noqa: E501
@@ -1955,8 +1939,7 @@ class Backtest:
         """
         if results is None:
             if self._results is None:
-                raise RuntimeError(
-                    "First issue `backtest.run()` to obtain results.")
+                raise RuntimeError("First issue `backtest.run()` to obtain results.")
             results = self._results
 
         plot(
