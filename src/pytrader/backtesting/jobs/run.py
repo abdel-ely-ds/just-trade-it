@@ -39,7 +39,7 @@ def run(
 
     # handling logs
     backtest_name = log_handler.handle_backtest_name(
-        backtest_name, log_handler.get_backtest_names()
+        backtest_name
     )
 
     updated_strategy = update_strategy(strategy, strategy_attrs)
