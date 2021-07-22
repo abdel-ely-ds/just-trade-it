@@ -38,13 +38,16 @@ def run(
         raise AnalysisNotAllowedError(analysis_type)
 
     # handling logs
-    backtest_name = log_handler.handle_backtest_name(
-        backtest_name
-    )
+    backtest_name = log_handler.handle_backtest_name(backtest_name)
 
     updated_strategy = update_strategy(strategy, strategy_attrs)
-    bt = Backtest(stock, updated_strategy, cash=cash,
-                  commission=commission, exclusive_orders=exclusive_orders)
+    bt = Backtest(
+        stock,
+        updated_strategy,
+        cash=cash,
+        commission=commission,
+        exclusive_orders=exclusive_orders,
+    )
     stats = bt.run()
     stats = stats[ALLOWED_ANALYSIS_TYPES[analysis_type]]
 

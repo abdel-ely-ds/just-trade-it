@@ -85,5 +85,5 @@ class LogHandler:
             f.write(json.dumps(backtest_names))
 
     def log_backtest_stats(self, stats: dict, backtest_name: str) -> None:
-        with open(os.path.join(self._log_folder, backtest_name), 'w') as f:
+        with open(os.path.join(self._log_folder, backtest_name), "w") as f:
             f.write(json.dumps(stats))
