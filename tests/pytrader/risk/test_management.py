@@ -7,12 +7,10 @@ RISK_PER_TRADE = 0.01
 
 @pytest.fixture
 def risk_manager():
-    return RiskManger(risk_per_trade=RISK_PER_TRADE,
-                      risk_to_reward=RISK_TO_REWARD)
+    return RiskManger(risk_per_trade=RISK_PER_TRADE, risk_to_reward=RISK_TO_REWARD)
 
 
 class TestRiskManager:
-
     def test_stop_loss(self, risk_manager):
         price = 49
         expected_sl = price - STOP_LOSS_LOOKUP_TABLE[50]
@@ -35,5 +33,5 @@ class TestRiskManager:
         one_r = 100
         entry = 800
         stop_loss = 700
-        expected_shares = RISK_PER_TRADE*capital/one_r
+        expected_shares = RISK_PER_TRADE * capital / one_r
         assert expected_shares == risk_manager.shares(capital, entry, stop_loss)

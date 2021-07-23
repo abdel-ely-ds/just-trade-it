@@ -9,3 +9,7 @@ class IPattern(ABC):
     @abstractmethod
     def __bool__(self):
         pass
+
+    @abstractmethod
+    def __eq__(self, o: object) -> bool:
+        pass

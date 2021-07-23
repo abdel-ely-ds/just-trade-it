@@ -33,6 +33,11 @@ class OrgReversalPattern(IPattern):
         )
         return all([cond1, cond2, cond3])
 
+    def __eq__(self, o: object) -> bool:
+        if self.__bool__() and o:
+            return True
+        return False
+
 
 class InsideBarReversalPattern(IPattern):
     def __init__(self, candle: Candle, pre_candle: Candle, support: List[float]):
@@ -62,6 +67,11 @@ class InsideBarReversalPattern(IPattern):
             and self._candle.low > self._pre_candle.low
         )
         return all([cond1, cond2, cond3])
+
+    def __eq__(self, o: object) -> bool:
+        if self.__bool__() and o:
+            return True
+        return False
 
 
 class TradeThroughReversalPattern(IPattern):
@@ -98,6 +108,11 @@ class TradeThroughReversalPattern(IPattern):
         )
         return all([cond1, cond2, cond3])
 
+    def __eq__(self, o: object) -> bool:
+        if self.__bool__() and o:
+            return True
+        return False
+
 
 class PinReversalPattern(IPattern):
     def __init__(self, candle: Candle, support: List[float]):
@@ -119,6 +134,11 @@ class PinReversalPattern(IPattern):
         cond2 = self._candle.low < self._support[0]
         cond3 = self._candle.bull_pin(ratio=2 / 3)
         return all([cond1, cond2, cond3])
+
+    def __eq__(self, o: object) -> bool:
+        if self.__bool__() and o:
+            return True
+        return False
 
 
 class AnyReversalPattern(IPattern):
@@ -157,3 +177,8 @@ class AnyReversalPattern(IPattern):
         return any(
             org_revsersal, inside_bar_reversal, trade_through_reversal, pin_reversal
         )
+
+    def __eq__(self, o: object) -> bool:
+        if self.__bool__() and o:
+            return True
+        return False
