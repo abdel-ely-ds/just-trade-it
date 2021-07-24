@@ -34,7 +34,7 @@ class OrgReversalPattern(IPattern):
         return all([cond1, cond2, cond3])
 
     def __eq__(self, o: object) -> bool:
-        if self.__bool__() and o:
+        if isinstance(o, bool) and self.__bool__() == o:
             return True
         return False
 
@@ -69,7 +69,7 @@ class InsideBarReversalPattern(IPattern):
         return all([cond1, cond2, cond3])
 
     def __eq__(self, o: object) -> bool:
-        if self.__bool__() and o:
+        if isinstance(o, bool) and self.__bool__() == o:
             return True
         return False
 
@@ -109,7 +109,7 @@ class TradeThroughReversalPattern(IPattern):
         return all([cond1, cond2, cond3])
 
     def __eq__(self, o: object) -> bool:
-        if self.__bool__() and o:
+        if isinstance(o, bool) and self.__bool__() == o:
             return True
         return False
 
@@ -136,7 +136,7 @@ class PinReversalPattern(IPattern):
         return all([cond1, cond2, cond3])
 
     def __eq__(self, o: object) -> bool:
-        if self.__bool__() and o:
+        if isinstance(o, bool) and self.__bool__() == o:
             return True
         return False
 
@@ -179,6 +179,6 @@ class AnyReversalPattern(IPattern):
         )
 
     def __eq__(self, o: object) -> bool:
-        if self.__bool__() and o:
+        if isinstance(o, bool) and self.__bool__() == o:
             return True
         return False

@@ -8,4 +8,5 @@
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "git.ignoreLimitWarning": true,
+    "python.formatting.provider": "black",
 }
