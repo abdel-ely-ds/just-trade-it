@@ -4,8 +4,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/abdel-ely-ds/trading-pytradere">
-    <img src="logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/abdel-ely-ds/trading-pytradere">S
+    <img src="logo.png" alt="Logo" width="300" height="150">
   </a>
 
   <h3 align="center">Backtest Framework for developpers and non developpers</h3>
