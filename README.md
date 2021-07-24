@@ -32,7 +32,7 @@ pip install pytrader
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-```
+```python
 from pytrader.backtesting import Backtest, Strategy
 from pytrader.backtester import crossover
 
