@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/abdel-ely-ds/trading-pytradere">S
+  <a href="https://github.com/abdel-ely-ds/trading-pytradere">
     <img src="logo.png" alt="Logo" width="300" height="150">
   </a>
 
