@@ -12,17 +12,17 @@ Please raise ideas for additions to this collection on the [issue tracker].
 """
 
 from collections import OrderedDict
+from inspect import currentframe
 from itertools import compress
 from numbers import Number
-from inspect import currentframe
-from typing import Sequence, Optional, Union, Callable
+from typing import Callable, Optional, Sequence, Union
 
 import numpy as np
 import pandas as pd
 
-from .backtesting import Strategy
 from ._plotting import plot_heatmaps as _plot_heatmaps
 from ._util import _Array, _as_str
+from .backtesting import Strategy
 
 __pdoc__ = {}
 

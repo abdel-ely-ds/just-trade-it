@@ -1,11 +1,5 @@
 from pytrader.candlesticks import Candle
-from pytrader.patterns import (
-    AnyReversalPattern,
-    InsideBarReversalPattern,
-    OrgReversalPattern,
-    PinReversalPattern,
-    TradeThroughReversalPattern,
-)
+from pytrader.patterns import OrgReversalPattern
 
 
 class TestReversalPatterns:

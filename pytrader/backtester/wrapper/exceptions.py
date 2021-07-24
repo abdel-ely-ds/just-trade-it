@@ -1,6 +1,5 @@
 ANALYSIS_NOT_ALLOWED_MESSAGE = """
     the analysis type {} is not allow. Here is what type of analysis you can do {}
-    \n 
 """
 
 MACRO_ANALYSIS = [

@@ -1,4 +1,5 @@
 import pytest
+
 from pytrader.risk import STOP_LOSS_LOOKUP_TABLE, RiskManger
 
 RISK_TO_REWARD = 2.0

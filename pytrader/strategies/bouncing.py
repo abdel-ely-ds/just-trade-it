@@ -1,6 +1,7 @@
 from typing import List
 
 import numpy as np
+
 from pytrader.backtester import Strategy
 from pytrader.candlesticks import Candle
 from pytrader.indicators import EMA
@@ -16,7 +17,7 @@ RISK_TO_REWARD = 2.0
 
 class Bouncing(Strategy):
     def init(self):
-        ## data and indicators
+        # data and indicators
         price = self.data.Close
         self.ema18 = self.I(EMA, price, 18)
         self.ema50 = self.I(EMA, price, 50)

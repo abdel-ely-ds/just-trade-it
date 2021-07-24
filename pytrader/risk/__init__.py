@@ -1,1 +1,1 @@
-from .management import RiskManger, STOP_LOSS_LOOKUP_TABLE
+from .management import STOP_LOSS_LOOKUP_TABLE, RiskManger

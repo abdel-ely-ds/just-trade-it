@@ -1142,9 +1142,8 @@ class Backtest:
         if (
             not data.index.is_all_dates
             and not isinstance(data.index, pd.RangeIndex)
-            and
             # Numeric index with most large numbers
-            (
+            and (
                 data.index.is_numeric()
                 and (data.index > pd.Timestamp("1975").timestamp()).mean() > 0.8
             )
