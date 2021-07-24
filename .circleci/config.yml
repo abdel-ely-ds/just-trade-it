@@ -1,0 +1,17 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: circleci/python:3.6.4
+    steps:
+      - checkout
+      - run: pip3 install nox=2020.8.22
+      - run: nox
+workflows:
+  version: 2
+  commit_workflow:
+    jobs:
+      - build
+
+
