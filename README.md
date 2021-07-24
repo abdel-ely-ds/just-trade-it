@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/abdel-ely-ds/trading-pytradere">
     <img src="logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -15,9 +15,9 @@
     <br />
     <br />
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/abdel-ely-ds/trading-pytrader/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/abdel-ely-ds/trading-pytrader/issues">Request Feature</a>
   </p>
 </p>
 
