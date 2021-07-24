@@ -67,7 +67,7 @@ class LogHandler:
             ans = input("Do you want to overwrite: [y/n] ?")
             print("\n")
             if not ans.lower().startswith("y"):
-                new_backtest_name = input("Please provide a new log name: ")
+                new_backtest_name = input("Please provide a new backtest name: ")
                 new_backtest_name = new_backtest_name.lower()
         return new_backtest_name
 

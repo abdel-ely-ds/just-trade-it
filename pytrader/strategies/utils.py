@@ -1,4 +1,4 @@
-from pytrader.backtesting.backtesting import Trade
+from pytrader.backtester.core.backtesting import Trade
 from pytrader.risk import RiskManger
 from pytrader.strategies import RISK_TO_REWARD, RISk_PER_TRADE
 

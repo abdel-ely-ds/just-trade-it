@@ -1,7 +1,7 @@
 from typing import List
 
 import numpy as np
-from pytrader.backtesting import Strategy
+from pytrader.backtester import Strategy
 from pytrader.candlesticks import Candle
 from pytrader.indicators import EMA
 from pytrader.patterns import AnyReversalPattern

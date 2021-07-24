@@ -2,35 +2,35 @@ import os
 import re
 import sys
 import warnings
-from itertools import cycle, combinations
 from functools import partial
+from itertools import combinations, cycle
 from typing import Callable, List, Union
 
 import numpy as np
 import pandas as pd
-
-from bokeh.colors.named import lime as BULL_COLOR, tomato as BEAR_COLOR
-from bokeh.plotting import figure as _figure
-from bokeh.models import (
-    CrosshairTool,
-    CustomJS,
-    ColumnDataSource,
-    NumeralTickFormatter,
-    Span,
-    HoverTool,
-    Range1d,
-    DatetimeTickFormatter,
-    FuncTickFormatter,
-    WheelZoomTool,
-    LinearColorMapper,
-)
-from bokeh.io import output_notebook, output_file, show
+from bokeh.colors.named import lime as BULL_COLOR
+from bokeh.colors.named import tomato as BEAR_COLOR
+from bokeh.io import output_file, output_notebook, show
 from bokeh.io.state import curstate
 from bokeh.layouts import gridplot
+from bokeh.models import (
+    ColumnDataSource,
+    CrosshairTool,
+    CustomJS,
+    DatetimeTickFormatter,
+    FuncTickFormatter,
+    HoverTool,
+    LinearColorMapper,
+    NumeralTickFormatter,
+    Range1d,
+    Span,
+    WheelZoomTool,
+)
 from bokeh.palettes import Category10
+from bokeh.plotting import figure as _figure
 from bokeh.transform import factor_cmap
 
-from backtesting._util import _data_period, _as_list, _Indicator
+from ._util import _as_list, _data_period, _Indicator
 
 with open(
     os.path.join(os.path.dirname(__file__), "autoscale_cb.js"), encoding="utf-8"
@@ -128,7 +128,7 @@ def _maybe_resample_data(resample_rule, df, indicators, equity_data, trades):
             "See `Backtest.plot(resample=...)`"
         )
 
-    from .lib import OHLCV_AGG, TRADES_AGG, _EQUITY_AGG
+    from .lib import _EQUITY_AGG, OHLCV_AGG, TRADES_AGG
 
     df = df.resample(freq, label="right").agg(OHLCV_AGG).dropna()
 
