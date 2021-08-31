@@ -6,7 +6,7 @@ jobs:
       - image: circleci/python:3.6.4
     steps:
       - checkout
-      - run: pip install nox==2020.8.22
+      - run: sudo pip3 install nox==2020.8.22
       - run: nox
 
 workflows:
