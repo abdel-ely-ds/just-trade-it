@@ -17,4 +17,3 @@ workflows:
   commit_workflow:
     jobs:
       - build
-
