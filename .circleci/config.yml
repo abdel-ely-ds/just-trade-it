@@ -7,9 +7,9 @@ jobs:
     steps:
       - checkout
       - run: sudo pip3 install --upgrade pip
-      - run: pip install zest.releaser[recommended]
       - run: sudo pip3 install nox==2020.8.22
       - run: nox
+      - run: pip install zest.releaser[recommended]
       - run: fullrelease --no-input
 
 workflows:
@@ -17,4 +17,3 @@ workflows:
   commit_workflow:
     jobs:
       - build
-      
