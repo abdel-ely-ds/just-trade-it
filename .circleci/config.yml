@@ -8,6 +8,8 @@ jobs:
       - checkout
       - run: sudo pip3 install --upgrade pip
       - run: sudo git tag 0.1.0 -m 'Tagging 0.1.0'
+      - run: sudo git config --global user.email "abdel.ely.ds@gmail.com"
+      - run: sudo git config --global user.name "abdel-ely-ds"
       - run: sudo pip3 install zest.releaser
       - run: sudo pip3 install nox==2020.8.22
       - run: nox
