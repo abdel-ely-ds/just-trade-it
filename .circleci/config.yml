@@ -7,7 +7,6 @@ jobs:
     steps:
       - checkout
       - run: sudo pip3 install --upgrade pip
-      - run: sudo pip3 install zest.releaser
       - run: sudo pip3 install nox==2020.8.22
       - run: nox
       - run: fullrelease --no-input
