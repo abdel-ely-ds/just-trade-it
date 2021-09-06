@@ -33,7 +33,7 @@ class LogHandler:
         if self._log_folder not in os.listdir():
             os.mkdir(self._log_folder)
             with open(
-                os.path.join(self._log_folder, self._backtest_names_filename)
+                os.path.join(self._log_folder, self._backtest_names_filename, "w")
             ) as f:
                 f.write(json.dumps({}))
 
@@ -59,7 +59,7 @@ class LogHandler:
             str: name to used for logging the backtest expirement
         """
 
-        backtest_names = self.get_backtest_names()
+        backtest_names = []
         new_backtest_name = backtest_name
 
         if backtest_name in backtest_names:

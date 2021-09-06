@@ -34,9 +34,7 @@ class OrgReversalPattern(IPattern):
         return all([cond1, cond2, cond3])
 
     def __eq__(self, o: object) -> bool:
-        if isinstance(o, bool) and self.__bool__() == o:
-            return True
-        return False
+        return isinstance(o, bool) and self.__bool__() == o
 
 
 class InsideBarReversalPattern(IPattern):
@@ -60,7 +58,7 @@ class InsideBarReversalPattern(IPattern):
             self._support[0]
         ) and self._pre_candle.above_support(self._support[1])
         # cut support
-        cond2 = self._.candle.low < self._support[0]
+        cond2 = self._candle.low < self._support[0]
         # Lower highs and higher hihgs
         cond3 = (
             self._candle.high < self._pre_candle.high
@@ -69,9 +67,7 @@ class InsideBarReversalPattern(IPattern):
         return all([cond1, cond2, cond3])
 
     def __eq__(self, o: object) -> bool:
-        if isinstance(o, bool) and self.__bool__() == o:
-            return True
-        return False
+        return isinstance(o, bool) and self.__bool__() == o
 
 
 class TradeThroughReversalPattern(IPattern):
@@ -109,9 +105,7 @@ class TradeThroughReversalPattern(IPattern):
         return all([cond1, cond2, cond3])
 
     def __eq__(self, o: object) -> bool:
-        if isinstance(o, bool) and self.__bool__() == o:
-            return True
-        return False
+        return isinstance(o, bool) and self.__bool__() == o
 
 
 class PinReversalPattern(IPattern):
@@ -136,9 +130,7 @@ class PinReversalPattern(IPattern):
         return all([cond1, cond2, cond3])
 
     def __eq__(self, o: object) -> bool:
-        if isinstance(o, bool) and self.__bool__() == o:
-            return True
-        return False
+        return isinstance(o, bool) and self.__bool__() == o
 
 
 class AnyReversalPattern(IPattern):
@@ -175,10 +167,8 @@ class AnyReversalPattern(IPattern):
         pin_reversal = PinReversalPattern(candle=self._candle, support=self._support)
 
         return any(
-            org_revsersal, inside_bar_reversal, trade_through_reversal, pin_reversal
+            [org_revsersal, inside_bar_reversal, trade_through_reversal, pin_reversal]
         )
 
     def __eq__(self, o: object) -> bool:
-        if isinstance(o, bool) and self.__bool__() == o:
-            return True
-        return False
+        return isinstance(o, bool) and self.__bool__() == o

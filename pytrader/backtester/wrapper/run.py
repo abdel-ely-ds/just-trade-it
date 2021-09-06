@@ -15,11 +15,11 @@ from .utils import update_strategy
 def execute(
     strategy: Strategy,
     backtest_name: str,
-    stock: pd.Series,
+    stock: pd.DataFrame,
     cash: int = 20_000,
     commission: int = 0.0,
     exclusive_orders: bool = False,
-    strategy_attrs: dict = None,
+    strategy_attrs: dict = {},
     analysis_type: str = "MACRO",
     log_handler: LogHandler = LogHandler(),
 ) -> json:
@@ -28,6 +28,7 @@ def execute(
         raise AnalysisNotAllowedError(analysis_type)
 
     # handling logs
+    # TODO: fix log handler
     backtest_name = log_handler.handle_backtest_name(backtest_name)
 
     updated_strategy = update_strategy(strategy, strategy_attrs)
@@ -40,7 +41,8 @@ def execute(
     )
     stats = bt.run()
     stats = stats[ALLOWED_ANALYSIS_TYPES[analysis_type]]
+    # stats["Duration"] = stats["Duration"].dt.days
 
     # todo: process stats
 
-    return stats.to_json(orient="split")
+    return stats

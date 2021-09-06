@@ -1,1 +1,1 @@
-from .backtesting import Backtest, Strategy  # noqa: F401
+from .backtesting import Backtest, Strategy, Trade  # noqa: F401
