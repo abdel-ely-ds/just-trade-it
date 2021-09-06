@@ -2,8 +2,7 @@ import pytest
 
 from pytrader.risk import STOP_LOSS_LOOKUP_TABLE, RiskManger
 
-RISK_TO_REWARD = 2.0
-RISK_PER_TRADE = 0.01
+from pytrader.strategies.bouncing import RISK_TO_REWARD, RISK_PER_TRADE
 
 
 @pytest.fixture

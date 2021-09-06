@@ -11,7 +11,7 @@ from pytrader.strategies.utils import add_attrs
 
 UP_DAYS = 20
 WAIT = 1
-RISk_PER_TRADE = 0.01
+RISK_PER_TRADE = 0.01
 RISK_TO_REWARD = 2.0
 
 
@@ -27,7 +27,7 @@ class Bouncing(Strategy):
         self.up_days = UP_DAYS
         self.wait = WAIT
         self.risk_to_reward = RISK_TO_REWARD
-        self.risk_per_trade = RISk_PER_TRADE
+        self.risk_per_trade = RISK_PER_TRADE
         self.risk_manager = RiskManger(
             risk_to_reward=self.risk_to_reward, risk_per_trade=self.risk_per_trade
         )
