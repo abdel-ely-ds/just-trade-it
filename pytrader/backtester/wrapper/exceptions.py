@@ -1,31 +1,24 @@
-ANALYSIS_NOT_ALLOWED_MESSAGE = """
-    the analysis type {} is not allow. Here is what type of analysis you can do {}
-"""
-
-MACRO_ANALYSIS = [
-    "# Trades",
-    "Return [%]",
-    "Win Rate [%]",
-    "Best Trade [%]",
-    "Worst Trade [%]",
-    "Avg. Trade [%]",
-    "Max. Drawdown [%]",
-    "Avg. Drawdown [%]",
-    "Max. Trade Duration",
-    "Avg. Trade Duration",
-    "Max. Drawdown Duration",
-    "Avg. Drawdown Duration",
-]
-
-MICRO_ANALYSIS = ["_trades"]
-
-ALLOWED_ANALYSIS_TYPES = {"MACRO": MACRO_ANALYSIS, "MICRO": MICRO_ANALYSIS}
+from pytrader.backtester.wrapper.available_analysis import AVAILABLE_ANALYSIS
+from pytrader.backtester.wrapper.exception_messages import (
+    ANALYSIS_NOT_AVAILABLE_MESSAGE,
+    BACKTEST_NAME_ALREADY_EXISTS,
+)
 
 
-class AnalysisNotAllowedError(Exception):
-    def __init__(self, analysis_type, message=ANALYSIS_NOT_ALLOWED_MESSAGE):
+class AnalysisNotAvailableError(Exception):
+    def __init__(self, analysis_type, message=ANALYSIS_NOT_AVAILABLE_MESSAGE):
         self.analysis_type = analysis_type
         self.message = message
         super().__init__(
-            self.message.format(self.analysis_type, ALLOWED_ANALYSIS_TYPES.keys())
+            self.message.format(self.analysis_type, AVAILABLE_ANALYSIS.keys())
+        )
+
+
+class BackTestNameAlreadyExists(Exception):
+    def __init__(self, existing_backtest_names, backtest_name, message=BACKTEST_NAME_ALREADY_EXISTS):
+        self.backtest_name = backtest_name
+        self.existing_backtest_names = existing_backtest_names
+        self.message = message
+        super().__init__(
+            self.message.format(self.backtest_name, self.existing_backtest_names)
         )

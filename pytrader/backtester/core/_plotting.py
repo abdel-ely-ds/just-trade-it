@@ -45,7 +45,7 @@ if IS_JUPYTER_NOTEBOOK:
         "Setting Bokeh output to notebook. "
         "This may not work in Jupyter clients without JavaScript "
         "support (e.g. PyCharm, Spyder IDE). "
-        "Reset with `backtesting.set_bokeh_output(notebook=False)`."
+        "Reset with `core.set_bokeh_output(notebook=False)`."
     )
     output_notebook()
 

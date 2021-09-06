@@ -1,10 +1,10 @@
 import pandas as pd
 
-from pytrader.backtester import execute
+from pytrader.backtester import backtest_run
 from pytrader.strategies import Bouncing
 
 
-def test_placerholder():
+def test_backtest_run():
     strategy = Bouncing
     backtest_name = "test"
     stock = pd.read_csv(
@@ -12,5 +12,6 @@ def test_placerholder():
     )
     stock.set_index("Date", inplace=True)
     stock.index = pd.to_datetime(stock.index)
-    stats = execute(strategy=strategy, backtest_name=backtest_name, stock=stock)
+    stats = backtest_run(strategy=strategy, backtest_name=backtest_name, stock=stock, analysis_type="MACRO")
+    print(stats)
     assert type(stats) == pd.Series
