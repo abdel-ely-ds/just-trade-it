@@ -24,8 +24,6 @@ class RiskManger:
 
         Args:
             price (float): the price of the trigging candle
-            sl_lookup_table (dict, optional): it indicates the offset to apply. Defaults to STOP_LOSS_LOOKUP_TABLE.
-
         Returns:
             [float]: the stop loss
         """
@@ -56,7 +54,7 @@ class RiskManger:
             stop_loss (float): the stop loss price
 
         Returns:
-            float: one r price
+            float: one_r distance
         """
         return entry - stop_loss
 

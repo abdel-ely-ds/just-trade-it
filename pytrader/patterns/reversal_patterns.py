@@ -5,7 +5,7 @@ from pytrader.patterns import IPattern
 
 
 class OrgReversalPattern(IPattern):
-    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float]):
+    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs):
         """
 
         Args:
@@ -13,6 +13,7 @@ class OrgReversalPattern(IPattern):
             pre_candle (Candle): yesterday's candle
             support (List[float]): support
         """
+        super().__init__(**kwargs)
         self._candle = candle
         self._pre_candle = pre_candle
         self._support = support
@@ -38,7 +39,7 @@ class OrgReversalPattern(IPattern):
 
 
 class InsideBarReversalPattern(IPattern):
-    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float]):
+    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs):
         """
 
         Args:
@@ -46,6 +47,7 @@ class InsideBarReversalPattern(IPattern):
             pre_candle (Candle): yesterday's candle
             support (List[float]): support
         """
+        super().__init__(**kwargs)
         self._candle = candle
         self._pre_candle = pre_candle
         self._support = support
@@ -71,7 +73,7 @@ class InsideBarReversalPattern(IPattern):
 
 
 class TradeThroughReversalPattern(IPattern):
-    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float]):
+    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs):
         """
 
         Args:
@@ -79,6 +81,7 @@ class TradeThroughReversalPattern(IPattern):
             pre_candle (Candle): yesterday's candle
             support (List[float]): support
         """
+        super().__init__(**kwargs)
         self._candle = candle
         self._pre_candle = pre_candle
         self._support = support
@@ -88,14 +91,12 @@ class TradeThroughReversalPattern(IPattern):
         pattern logic
         """
         cond1 = (
-            self._pre_candle.bear()
-            and self._pre_candle.open > self._support[1]
-            and self._pre_candle.close < self._support[1]
+                self._pre_candle.bear()
+                and self._pre_candle.open > self._support[1] > self._pre_candle.close
         )
         cond2 = (
-            self._candle.bull()
-            and self._candle.open < self._support[0]
-            and self._candle.close > self._support[0]
+                self._candle.bull()
+                and self._candle.open < self._support[0] < self._candle.close
         )
         # lower highs and lower lows
         cond3 = (
@@ -109,7 +110,7 @@ class TradeThroughReversalPattern(IPattern):
 
 
 class PinReversalPattern(IPattern):
-    def __init__(self, candle: Candle, support: List[float]):
+    def __init__(self, candle: Candle, support: List[float], **kwargs):
         """
 
         Args:
@@ -117,6 +118,7 @@ class PinReversalPattern(IPattern):
             pre_candle (Candle): yesterday's candle
             support (List[float]): support
         """
+        super().__init__(**kwargs)
         self._candle = candle
         self._support = support
 
@@ -134,7 +136,7 @@ class PinReversalPattern(IPattern):
 
 
 class AnyReversalPattern(IPattern):
-    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float]):
+    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs):
         """
 
         Args:
@@ -142,6 +144,7 @@ class AnyReversalPattern(IPattern):
             pre_candle (Candle): yesterday's candle
             support (List[float]): support
         """
+        super().__init__(**kwargs)
         self._candle = candle
         self._pre_candle = pre_candle
         self._support = support
@@ -152,7 +155,7 @@ class AnyReversalPattern(IPattern):
         pattern logic
         """
 
-        org_revsersal = OrgReversalPattern(
+        org_reversal = OrgReversalPattern(
             candle=self._candle, pre_candle=self._pre_candle, support=self._support
         )
 
@@ -167,7 +170,7 @@ class AnyReversalPattern(IPattern):
         pin_reversal = PinReversalPattern(candle=self._candle, support=self._support)
 
         return any(
-            [org_revsersal, inside_bar_reversal, trade_through_reversal, pin_reversal]
+            [org_reversal, inside_bar_reversal, trade_through_reversal, pin_reversal]
         )
 
     def __eq__(self, o: object) -> bool:

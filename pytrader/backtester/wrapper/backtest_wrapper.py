@@ -76,6 +76,9 @@ class BacktestWrapper:
         """
         Args:
             stock_path (str):  the path to a stock
+
+        Returns:
+            [json]: the results of the backtest
         """
 
         bt = Backtest(
@@ -88,9 +91,14 @@ class BacktestWrapper:
         stats = bt.run()
         return post_process_stats(stats[ANALYSIS_ATTRIBUTES[self._analysis_type]])
 
-    def run(self, stocks_path: str) -> dict:
-
-        prefix_path, stock_names = pre_process_path(stocks_path)
+    def run(self, stock_path: str) -> dict:
+        """
+        Args:
+            stock_path: path to a stock or a folder of stocks
+        Returns:
+            [dict]: the results of the backtest for each stock
+        """
+        prefix_path, stock_names = pre_process_path(stock_path)
         backtest_results = {}
         for stock_name in tqdm(stock_names):
             backtest_results[stock_name] = self._run(
@@ -99,7 +107,15 @@ class BacktestWrapper:
 
         return backtest_results
 
-    def log_results(self, backtest_results, backtest_name):
+    def log_results(self, backtest_results: dict, backtest_name: str) -> None:
+        """
+        It creates a log folder where results would be saved to be analyzed later
+
+        Args:
+            backtest_results (dict): results of the backtest output of the method run
+            backtest_name (str): the name on which the backtest would be saved
+
+        """
         self._log_handler.log_backtest(
             backtest_name=backtest_name,
             backtest_results=backtest_results,
