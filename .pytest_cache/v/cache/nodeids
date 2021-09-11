@@ -1,12 +1,3 @@
 [
-  "tests/pytrader/backtester/wrapper/test_backtest_run.py::test_backtest_run",
-  "tests/pytrader/backtester/wrapper/test_log_handler.py::TestLogHandler::test_handle_logs_folder_creation",
-  "tests/pytrader/backtester/wrapper/test_log_handler.py::TestLogHandler::test_handle_logs_backtested_names_file",
-  "tests/pytrader/candlesticks/test_candle.py::test_candle",
-  "tests/pytrader/patterns/test_reversal_patterns.py::TestReversalPatterns::test_org_reversal",
-  "tests/pytrader/risk/test_management.py::TestRiskManager::test_stop_loss",
-  "tests/pytrader/risk/test_management.py::TestRiskManager::test_target",
-  "tests/pytrader/risk/test_management.py::TestRiskManager::test_one_r",
-  "tests/pytrader/risk/test_management.py::TestRiskManager::test_shares",
-  "tests/pytrader/strategies/test_strategies.py::test_placeholder"
+  "tests/pytrader/backtester/wrapper/test_backtest_run.py::test_backtest_run"
 ]

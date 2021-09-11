@@ -36,7 +36,7 @@ class Bouncing(Strategy):
         self,
     ) -> None:
         """
-        wait until <self.wait> days then cancle order if not executed
+        wait until <self.wait> days then cancel order if not executed
         """
         for order in self.orders:
             if (
