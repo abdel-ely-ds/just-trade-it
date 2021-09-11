@@ -1,7 +1,7 @@
 import setuptools
 from setuptools import setup
 
-TEST_DEPS = ["pytest==5.0.1", "pytest-runner==5.1", "pytest-cov==2.7.1"]
+TEST_DEPS = ["pytest==5.0.1", "pytest-runner==5.1", "pytest-cov==2.7.1", "nox"]
 
 setup(
     name="pytrader",

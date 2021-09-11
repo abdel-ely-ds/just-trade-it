@@ -9,9 +9,9 @@ BACKTESTED_NAMES_FILENAME = "backtest_names.txt"
 
 class LogHandler:
     def __init__(
-            self,
-            log_folder: str = LOG_FOLDER,
-            backtest_names_filename: str = BACKTESTED_NAMES_FILENAME,
+        self,
+        log_folder: str = LOG_FOLDER,
+        backtest_names_filename: str = BACKTESTED_NAMES_FILENAME,
     ) -> None:
 
         self._log_folder = log_folder
@@ -27,7 +27,7 @@ class LogHandler:
         if self._log_folder not in os.listdir():
             os.mkdir(self._log_folder)
             with open(
-                    os.path.join(self._log_folder, self._backtest_names_filename), "w"
+                os.path.join(self._log_folder, self._backtest_names_filename), "w"
             ) as f:
                 f.write(json.dumps({}))
 
@@ -55,10 +55,11 @@ class LogHandler:
 
         if backtest_name not in backtest_names:
             return backtest_name.lower()
-        raise BackTestNameAlreadyExists(existing_backtest_names=backtest_names.keys(),
-                                        backtest_name=backtest_name)
+        raise BackTestNameAlreadyExists(
+            existing_backtest_names=backtest_names.keys(), backtest_name=backtest_name
+        )
 
-    def _log_backtest(self, backtest_name: str, strategy_attrs: dict = {}):
+    def _log_backtest(self, backtest_name: str, strategy_attrs: dict = None) -> None:
         """
         it saves all the attributes of the strategy
 
@@ -68,14 +69,19 @@ class LogHandler:
         """
         backtest_names = self.get_backtest_names()
         backtest_names[backtest_name] = strategy_attrs
-        print(backtest_names)
-        with open(os.path.join(self._log_folder, self._backtest_names_filename), "w") as f:
+        with open(
+            os.path.join(self._log_folder, self._backtest_names_filename), "w"
+        ) as f:
             f.write(json.dumps(backtest_names))
 
-    def _log_backtest_stats(self, backtest_name: str, stats: dict) -> None:
+    def _log_backtest_stats(self, backtest_name: str, backtest_results: dict) -> None:
         with open(os.path.join(self._log_folder, backtest_name), "w") as f:
-            f.write(json.dumps(stats))
+            f.write(json.dumps(backtest_results))
 
-    def log_backtest(self, backtest_name, stats, strategy_attrs: dict = {}):
+    def log_backtest(
+        self, backtest_name: str, backtest_results: dict, strategy_attrs: dict = None
+    ) -> None:
         self._log_backtest(backtest_name=backtest_name, strategy_attrs=strategy_attrs)
-        self._log_backtest_stats(backtest_name=backtest_name, stats=stats)
+        self._log_backtest_stats(
+            backtest_name=backtest_name, backtest_results=backtest_results
+        )
