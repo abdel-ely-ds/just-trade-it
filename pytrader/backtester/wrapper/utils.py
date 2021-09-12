@@ -1,42 +1,10 @@
-import json
 import os
-from copy import deepcopy
-from typing import Type
+import getpass
 
 import pandas as pd
+import platform
 
-from pytrader.backtester.core import Strategy
-
-
-def update_strategy(
-    strategy: Type[Strategy], strategy_attrs: dict = None
-) -> Type[Strategy]:
-    """
-    Adds some attributes to the strategy
-
-    Args:
-        strategy (Strategy): strategy
-        strategy_attrs (dict, optional): additional attributes. Defaults to None.
-
-    Returns:
-        Strategy: [description]
-    """
-
-    updated_strategy = deepcopy(strategy)
-
-    try:
-        for (
-            key,
-            value,
-        ) in strategy_attrs.items():
-            setattr(updated_strategy, key, value)
-    except AttributeError:
-        pass
-
-    return updated_strategy
-
-
-def post_process_stats(stats: pd.Series) -> json:
+def post_process_stats(stats: pd.Series, symbol: str) -> pd.DataFrame:
     stats_copy = stats.copy()
     try:
         stats_copy["Duration"] = stats_copy["Duration"].dt.days
@@ -47,8 +15,8 @@ def post_process_stats(stats: pd.Series) -> json:
         stats_copy = stats_copy.to_frame().T
     except AttributeError:
         pass
-
-    return stats_copy.to_json(orient="split")
+    stats_copy.index = [symbol] * len(stats_copy)
+    return stats_copy
 
 
 def pre_process_stock(stock: pd.DataFrame) -> pd.DataFrame:
@@ -58,14 +26,22 @@ def pre_process_stock(stock: pd.DataFrame) -> pd.DataFrame:
     return stock_copy
 
 
-def pre_process_path(stocks_path: str) -> tuple[str, list[str]]:
+def pre_process_path(stock_path: str) -> tuple[str, list[str]]:
     try:
-        prefix_path = stocks_path
-        stock_names = os.listdir(stocks_path)
+        prefix_path = stock_path
+        stock_names = os.listdir(stock_path)
 
     except NotADirectoryError:
-        stocks_path_split = stocks_path.split("\\")
-        prefix_path = "\\".join(stocks_path_split[:-1])
+        sep = "\\" if platform.system() == "Windows" else "/"
+        stocks_path_split = stock_path.split(sep)
+        prefix_path = sep.join(stocks_path_split[:-1])
         stock_names = [stocks_path_split[-1]]
 
     return prefix_path, stock_names
+
+
+def set_log_folder(log_folder: str) -> str:
+    output_dir = os.path.abspath(os.path.expanduser(log_folder))
+    if not os.path.exists(output_dir):
+        os.mkdir(os.path.abspath(os.path.expanduser(log_folder)))
+    return output_dir

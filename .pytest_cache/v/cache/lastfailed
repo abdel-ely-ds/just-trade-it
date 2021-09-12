@@ -1,3 +1,4 @@
 {
+  "tests/pytrader/backtester/wrapper/test_backtest_wrapper.py": true,
   "tests/pytrader/backtester/wrapper/test_run.py::test_run": true
 }
