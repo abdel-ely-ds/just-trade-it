@@ -1,8 +1,8 @@
 import os
-import getpass
+import platform
 
 import pandas as pd
-import platform
+
 
 def post_process_stats(stats: pd.Series, symbol: str) -> pd.DataFrame:
     stats_copy = stats.copy()

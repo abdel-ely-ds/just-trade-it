@@ -45,7 +45,7 @@ class Bouncing(Strategy):
             ):
                 order.cancel()
 
-    def uptrend(self) -> bool:  # sourcery skip: comprehension-to-generator
+    def uptrend(self) -> bool:
         """
         checks if the trend is bullish
 

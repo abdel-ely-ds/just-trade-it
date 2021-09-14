@@ -7,10 +7,12 @@ from tqdm import tqdm
 from pytrader.backtester.core import Backtest, Strategy
 from pytrader.backtester.wrapper.available_analysis import ANALYSIS_ATTRIBUTES
 from pytrader.backtester.wrapper.exceptions import AnalysisNotAvailableError
+
 from .utils import (
     post_process_stats,
     pre_process_path,
-    pre_process_stock, set_log_folder
+    pre_process_stock,
+    set_log_folder,
 )
 
 LOG_FOLDER = "logs"
@@ -63,7 +65,7 @@ class BacktestWrapper:
         if self._analysis_type not in ANALYSIS_ATTRIBUTES:
             raise AnalysisNotAvailableError(self._analysis_type)
 
-    def _run(self, stock_path: str, symbol:str) -> pd.DataFrame:
+    def _run(self, stock_path: str, symbol: str) -> pd.DataFrame:
         """
         Args:
             stock_path (str):  the path to a stock
@@ -80,7 +82,9 @@ class BacktestWrapper:
             exclusive_orders=self._exclusive_orders,
         )
         stats = bt.run()
-        return post_process_stats(stats[ANALYSIS_ATTRIBUTES[self._analysis_type]], symbol)
+        return post_process_stats(
+            stats[ANALYSIS_ATTRIBUTES[self._analysis_type]], symbol
+        )
 
     def run(self, stock_path: str) -> pd.DataFrame:
         """
@@ -93,13 +97,15 @@ class BacktestWrapper:
         backtest_results = pd.DataFrame()
 
         for stock_name in tqdm(stock_names):
-            backtest_results = backtest_results.append(self._run(
-                os.path.join(prefix_path, stock_name), stock_name
-            ))
+            backtest_results = backtest_results.append(
+                self._run(os.path.join(prefix_path, stock_name), stock_name)
+            )
 
         return backtest_results
 
-    def log_results(self, backtest_results: pd.DataFrame, backtest_name: str, ext: str = ".csv") -> None:
+    def log_results(
+        self, backtest_results: pd.DataFrame, backtest_name: str, ext: str = ".csv"
+    ) -> None:
         """
         It creates a log folder where results would be saved to be analyzed later
 
@@ -108,5 +114,8 @@ class BacktestWrapper:
             backtest_name (str): the name on which the backtest would be saved
             ext (str): extension of the file
         """
-        backtest_results.to_csv(os.path.join(set_log_folder(log_folder=self._log_folder),
-                                             backtest_name + ext))
+        backtest_results.to_csv(
+            os.path.join(
+                set_log_folder(log_folder=self._log_folder), backtest_name + ext
+            )
+        )

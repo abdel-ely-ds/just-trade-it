@@ -17,7 +17,7 @@ setup(
     include_package_data=True,
     version="1.0.0",
     packages=["pytrader"],
-    install_requires=["numpy", "pandas >= 0.25.0, != 0.25.0", "bokeh >= 1.4.0", "tqdm >=4.62.2"],
+    install_requires=["numpy", "pandas >= 0.25.0, != 0.25.0", "bokeh >= 1.4.0", "tqdm >=4.62.2", "matplotlib"],
     tests_require=TEST_DEPS,
     extras_require={"test": TEST_DEPS},
 )

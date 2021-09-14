@@ -5,7 +5,9 @@ from pytrader.patterns import IPattern
 
 
 class OrgReversalPattern(IPattern):
-    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs):
+    def __init__(
+        self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs
+    ):
         """
 
         Args:
@@ -39,7 +41,9 @@ class OrgReversalPattern(IPattern):
 
 
 class InsideBarReversalPattern(IPattern):
-    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs):
+    def __init__(
+        self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs
+    ):
         """
 
         Args:
@@ -73,7 +77,9 @@ class InsideBarReversalPattern(IPattern):
 
 
 class TradeThroughReversalPattern(IPattern):
-    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs):
+    def __init__(
+        self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs
+    ):
         """
 
         Args:
@@ -91,12 +97,12 @@ class TradeThroughReversalPattern(IPattern):
         pattern logic
         """
         cond1 = (
-                self._pre_candle.bear()
-                and self._pre_candle.open > self._support[1] > self._pre_candle.close
+            self._pre_candle.bear()
+            and self._pre_candle.open > self._support[1] > self._pre_candle.close
         )
         cond2 = (
-                self._candle.bull()
-                and self._candle.open < self._support[0] < self._candle.close
+            self._candle.bull()
+            and self._candle.open < self._support[0] < self._candle.close
         )
         # lower highs and lower lows
         cond3 = (
@@ -136,7 +142,9 @@ class PinReversalPattern(IPattern):
 
 
 class AnyReversalPattern(IPattern):
-    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs):
+    def __init__(
+        self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs
+    ):
         """
 
         Args:
