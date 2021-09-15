@@ -14,10 +14,8 @@ from pytrader.backtester import BacktestWrapper
 from pytrader.strategies import Bouncing
 from pytrader.analysis import Analyzer
 
-log_folder = "/tmp/logs"
-
 # run 
-btw = BacktestWrapper(strategy=Bouncing, analysis_type="MIRCRO")
+btw = BacktestWrapper(strategy=Bouncing, analysis_type="MIRCRO", log_folder="/tmp/logs")
 btr = btw.run(path_to_ur_stock)
 
 # logs results 
