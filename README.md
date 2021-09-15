@@ -4,7 +4,7 @@ Backtesting made easy: <strong>EVERYONE</strong> can backtest his strategy
 Installation
 ------------
 
-    $ pip install backtesting
+    $ pip install pytrader
     
 Usage
 ------------
