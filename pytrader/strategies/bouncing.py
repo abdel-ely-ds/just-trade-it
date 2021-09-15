@@ -115,7 +115,7 @@ class Bouncing(Strategy):
             support (List[float]): [description]
 
         Returns:
-            [List[float]]: is buy signal trigged
+            [List[float]]: is buy signal triggered
         """
 
         is_reversal = AnyReversalPattern(

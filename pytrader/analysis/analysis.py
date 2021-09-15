@@ -8,6 +8,8 @@ import numpy as np
 from functools import lru_cache
 import scipy.stats as st
 
+pd.options.display.float_format = '{:.3f}'.format
+
 
 @dataclass
 class Constants:
@@ -20,6 +22,8 @@ class Constants:
     IS_LOSING: str = "IsLosing"
     RISK_TO_REWARD: str = "RiskToReward"
     SYMBOL: str = "Symbol"
+    MAX_PNL: str = "MaxPnL"
+    MAX_NEGATIVE_PNL: str = "MaxNegativePnL"
 
 
 class Analyzer:
@@ -37,6 +41,15 @@ class Analyzer:
         func = ["mean", "min", "max", "std"]
         columns = [self._constants.DURATION, self._constants.RISK_TO_REWARD]
         return self._backtest_results.groupby(self._constants.IS_LOSING)[columns].agg(func)
+
+    def missed_tp_by(self) -> pd.Series:
+        """
+        Computes maximum positive pnl of losing trades
+        (ex: a losing trades that at some point had a pnl=+1.2*One_R -> distance_to_tp = risk_to_reward * One_R - PNL
+
+        """
+        losing_trades = self._backtest_results[self._constants.IS_LOSING]
+        return (losing_trades[self._constants.MAX_PNL] / losing_trades[self._constants.ONE_R]).describe()
 
     def plot_equity_curve(self, capital: float = 10_000, symbol: str = "") -> None:
         """
@@ -92,7 +105,7 @@ class Analyzer:
                                                        nb_trades=nb_trades)
 
         mean_equity_curve = equity_curves.mean(axis=0)
-        conf_int = st.t.interval(0.99, equity_curves.shape[1] - 1, loc=np.mean(equity_curves, axis=1),
+        conf_int = st.t.interval(0.99, equity_curves.shape[1] - 1, loc=equity_curves.mean(axis=0),
                                  scale=st.sem(equity_curves, axis=0))
         lower_band = [conf_int[0][i] for i in range(nb_trades)]
         upper_band = [conf_int[1][i] for i in range(nb_trades)]

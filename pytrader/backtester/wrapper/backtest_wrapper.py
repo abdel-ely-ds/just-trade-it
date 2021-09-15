@@ -98,7 +98,7 @@ class BacktestWrapper:
 
         for stock_name in tqdm(stock_names):
             backtest_results = backtest_results.append(
-                self._run(os.path.join(prefix_path, stock_name), stock_name)
+                self._run(os.path.join(prefix_path, stock_name), stock_name.split(".")[0])
             )
 
         return backtest_results
