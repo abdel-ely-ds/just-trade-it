@@ -108,6 +108,7 @@ class Analyzer:
                                   nb_simulations: int = 1000,
                                   nb_trades: int = 1000
                                   ) -> pd.DataFrame:
+
         # risk to reward distribution
         risk_value_counts = self._backtest_results[self._constants.RISK_TO_REWARD].value_counts(normalize=True)
         dist = risk_value_counts.to_list()
@@ -120,6 +121,7 @@ class Analyzer:
             equity_curve = self._compute_equity_curve(random_trades, capital)
             equity_curves.append(equity_curve)
 
+        # each row is an equity
         return pd.concat(equity_curves, axis=1)
 
     @staticmethod
