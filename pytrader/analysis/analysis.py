@@ -92,8 +92,8 @@ class Analyzer:
                                                        nb_trades=nb_trades)
 
         mean_equity_curve = equity_curves.mean(axis=0)
-        conf_int = st.t.interval(0.99, equity_curves.shape[1] - 1, loc=np.mean(equity_curves, axis=O),
-                                 scale=st.sem(equity_curves, axis=1))
+        conf_int = st.t.interval(0.99, equity_curves.shape[1] - 1, loc=np.mean(equity_curves, axis=1),
+                                 scale=st.sem(equity_curves, axis=0))
         lower_band = [conf_int[0][i] for i in range(nb_trades)]
         upper_band = [conf_int[1][i] for i in range(nb_trades)]
         plt.plot(mean_equity_curve)
