@@ -8,6 +8,8 @@ def post_process_stats(stats: pd.Series, symbol: str) -> pd.DataFrame:
     stats_copy = stats.copy()
     try:
         stats_copy["Duration"] = stats_copy["Duration"].dt.days
+        stats_copy['EntryTime'] = pd.to_datetime(stats_copy['EntryTime'])
+        stats_copy['ExitTime'] = pd.to_datetime(stats_copy['ExitTime'])
     except KeyError:
         pass
 

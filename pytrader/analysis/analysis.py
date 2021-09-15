@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-
+import logging
 import pandas as pd
 import random
 import matplotlib.pyplot as plt
@@ -62,12 +62,16 @@ class Analyzer:
         """
 
         if not symbol:
-            symbol = random.choice(self._backtest_results[self._constants.SYMBOL])
+            symbol = random.choice(self._backtest_results[self._constants.SYMBOL].unique())
+
         stock = self._backtest_results[self._backtest_results[self._constants.SYMBOL] == symbol]
         equity_curve = stock.groupby(self._constants.EXIT_TIME)[self._constants.PNL].sum()
         equity_curve.iloc[0] = equity_curve.iloc[0] + capital
         plt.plot(equity_curve.cumsum())
         plt.grid()
+        plt.title(f"Equity Curve of {symbol.upper()}")
+        plt.xlabel("time")
+        plt.ylabel("equity")
 
     def ruin_probability(self,
                          capital: float = 10_000,
