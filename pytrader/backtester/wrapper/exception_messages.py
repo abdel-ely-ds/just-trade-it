@@ -1,5 +1,5 @@
 ANALYSIS_NOT_AVAILABLE_MESSAGE = """
-    the analysis type {} is not allow. Here is what type of analysis you can do {}
+    the optimization type {} is not allow. Here is what type of optimization you can do {}
 """
 
 BACKTEST_NAME_ALREADY_EXISTS = """

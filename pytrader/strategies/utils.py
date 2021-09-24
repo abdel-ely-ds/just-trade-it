@@ -14,7 +14,7 @@ def add_attrs(
     ),
 ) -> None:
     """
-    it adds some attributes to the trade for post analysis
+    it adds some attributes to the trade for post optimization
 
     Args:
         trade (Trade): trade

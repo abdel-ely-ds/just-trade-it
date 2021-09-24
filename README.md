@@ -12,7 +12,7 @@ Usage
 ```python
 from pytrader.backtester import BacktestWrapper
 from pytrader.strategies import Bouncing
-from pytrader.analysis import Analyzer
+from pytrader.optimization import Analyzer
 
 log_folder = "/tmp/logs"
 
@@ -23,7 +23,7 @@ btr = btw.run(path_to_ur_stock)
 # logs results 
 btw.log_results(log_folder)
 
-# analysis 
+# optimization 
 analyzer = Analyzer(btr)
 analyzer.win_rate()
 analyzer.stats()

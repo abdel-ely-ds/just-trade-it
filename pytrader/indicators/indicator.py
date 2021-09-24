@@ -2,28 +2,18 @@ import numpy as np
 import pandas as pd
 
 
-def EMA(prices: pd.Series, n: int) -> pd.Series:
-    """
-    exp moving average
-
-    Args:
-        prices (pd.Series): a collection of prices
-        n (int): periods
-
-    Returns:
-        pd.Series: ema
-    """
-    return prices.s.ewm(span=n, adjust=False).mean()
+def ema(stock: pd.DataFrame, n: int) -> pd.Series:
+    return stock["Close"].ewm(span=n, adjust=False).mean()
 
 
-def MACD(prices: pd.Series, nfast=50, nslow=100):
-    fast = EMA(prices, n=nfast)
-    slow = EMA(prices, n=nslow)
+def macd(stock: pd.DataFrame, n_fast=50, n_slow=100):
+    fast = ema(stock, n=n_fast)
+    slow = ema(stock, n=n_slow)
     return fast - slow
 
 
-def STOCHASTICS(data, period, k):
-    close, low, high = data.Close.s, data.Low.s, data.High.s
+def stochastics(stock: pd.DataFrame, period: int, k: int):
+    close, low, high = stock.Close, stock.Low, stock.High
     l_period = low.rolling(window=period).min()
     h_period = high.rolling(window=period).max()
     per_k = 100 * (close - l_period) / (h_period - l_period)
@@ -31,15 +21,15 @@ def STOCHASTICS(data, period, k):
     return per_k
 
 
-def RSI(price, n=14) -> pd.Series:
-    prices = price.s
+def rsi(stock: pd.DataFrame, n=14) -> pd.Series:
+    prices = stock["Close"]
     deltas = np.diff(prices)
     seed = deltas[: n + 1]
     up = seed[seed >= 0].sum() / n
     down = -seed[seed < 0].sum() / n
     rs = up / down
-    rsi = np.zeros_like(prices)
-    rsi[:n] = 100.0 - 100.0 / (1.0 + rs)
+    rsi_values = np.zeros_like(prices)
+    rsi_values[:n] = 100.0 - 100.0 / (1.0 + rs)
     for i in range(n, len(prices)):
         delta = deltas[i - 1]  # The diff is 1 shorter
         if delta > 0:
@@ -51,5 +41,5 @@ def RSI(price, n=14) -> pd.Series:
         up = (up * (n - 1) + upval) / n
         down = (down * (n - 1) + downval) / n
         rs = up / down
-        rsi[i] = 100.0 - 100.0 / (1.0 + rs)
-    return pd.Series(rsi)
+        rsi_values[i] = 100.0 - 100.0 / (1.0 + rs)
+    return pd.Series(rsi_values)

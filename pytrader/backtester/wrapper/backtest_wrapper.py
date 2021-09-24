@@ -1,4 +1,5 @@
 import os
+import warnings
 from typing import Type
 
 import pandas as pd
@@ -15,6 +16,7 @@ from .utils import (
     set_log_folder,
 )
 
+warnings.filterwarnings("ignore")
 LOG_FOLDER = "logs"
 
 
@@ -65,7 +67,7 @@ class BacktestWrapper:
         if self._analysis_type not in ANALYSIS_ATTRIBUTES:
             raise AnalysisNotAvailableError(self._analysis_type)
 
-    def _run(self, stock_path: str, symbol: str) -> pd.DataFrame:
+    def _run(self, stock_path: str, symbol: str, plot: bool = False) -> pd.DataFrame:
         """
         Args:
             stock_path (str):  the path to a stock
@@ -73,7 +75,6 @@ class BacktestWrapper:
         Returns:
             [json]: the results of the backtest
         """
-
         bt = Backtest(
             pre_process_stock(pd.read_csv(stock_path)),
             strategy=self._strategy,
@@ -82,14 +83,17 @@ class BacktestWrapper:
             exclusive_orders=self._exclusive_orders,
         )
         stats = bt.run()
+        if plot:
+            bt.plot()
         return post_process_stats(
             stats[ANALYSIS_ATTRIBUTES[self._analysis_type]], symbol
         )
 
-    def run(self, stock_path: str) -> pd.DataFrame:
+    def run(self, stock_path: str, plot: bool = False) -> pd.DataFrame:
         """
         Args:
             stock_path: path to a stock or a folder of stocks
+            plot: plot or not
         Returns:
             [pd.DataFrame]: the results of the backtest for each stock
         """
@@ -97,9 +101,17 @@ class BacktestWrapper:
         backtest_results = pd.DataFrame()
 
         for stock_name in tqdm(stock_names):
-            backtest_results = backtest_results.append(
-                self._run(os.path.join(prefix_path, stock_name), stock_name.split(".")[0])
-            )
+            try:
+                backtest_results = backtest_results.append(
+                    self._run(
+                        os.path.join(prefix_path, stock_name),
+                        stock_name.split(".")[0],
+                        plot=plot,
+                    )
+                )
+            except:
+                print(stock_name)
+                pass
 
         return backtest_results
 

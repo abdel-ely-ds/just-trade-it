@@ -4,7 +4,7 @@ import numpy as np
 
 from pytrader.backtester import Strategy
 from pytrader.candlesticks import Candle
-from pytrader.indicators import EMA
+from pytrader.indicators import ema
 from pytrader.patterns import AnyReversalPattern
 from pytrader.risk import RiskManger
 from pytrader.strategies.utils import add_attrs
@@ -19,11 +19,11 @@ class Bouncing(Strategy):
     def init(self):
         # data and indicators
         price = self.data.Close
-        self.ema18 = self.I(EMA, price, 18)
-        self.ema50 = self.I(EMA, price, 50)
-        self.ema100 = self.I(EMA, price, 100)
-        self.ema150 = self.I(EMA, price, 150)
-        self.ema200 = self.I(EMA, price, 200, color="red")
+        self.ema18 = self.I(ema, price, 18)
+        self.ema50 = self.I(ema, price, 50)
+        self.ema100 = self.I(ema, price, 100)
+        self.ema150 = self.I(ema, price, 150)
+        self.ema200 = self.I(ema, price, 200, color="red")
         self.up_days = UP_DAYS
         self.wait = WAIT
         self.risk_to_reward = RISK_TO_REWARD

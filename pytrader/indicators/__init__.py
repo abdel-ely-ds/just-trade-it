@@ -1,1 +1,1 @@
-from .indicator import EMA, MACD, RSI, STOCHASTICS
+from .indicator import ema, macd, rsi, stochastics

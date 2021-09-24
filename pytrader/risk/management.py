@@ -1,6 +1,11 @@
+import math
+from collections import OrderedDict
+
 import numpy as np
 
-STOP_LOSS_LOOKUP_TABLE = {5: 0.01, 10: 0.02, 50: 0.03, 100: 0.10}
+STOP_LOSS_LOOKUP_TABLE = OrderedDict(
+    [(5, 0.01), (10, 0.02), (50, 0.03), (100, 0.05), (math.inf, 0.10)]
+)
 
 
 class RiskManger:
@@ -23,7 +28,7 @@ class RiskManger:
         it calculates the stop loss based on the sl_lookup table
 
         Args:
-            price (float): the price of the trigging candle
+            price (float): the price of the triggering candle
         Returns:
             [float]: the stop loss
         """
@@ -84,4 +89,4 @@ class RiskManger:
         Returns:
             [int]: share size
         """
-        return np.ceil(self._risk * capital / RiskManger.one_r(entry, stop_loss))
+        return np.ceil(self._risk * capital / self.one_r(entry, stop_loss))

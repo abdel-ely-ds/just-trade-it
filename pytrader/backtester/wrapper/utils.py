@@ -8,23 +8,20 @@ def post_process_stats(stats: pd.Series, symbol: str) -> pd.DataFrame:
     stats_copy = stats.copy()
     try:
         stats_copy["Duration"] = stats_copy["Duration"].dt.days
-        stats_copy['EntryTime'] = pd.to_datetime(stats_copy['EntryTime'])
-        stats_copy['ExitTime'] = pd.to_datetime(stats_copy['ExitTime'])
-    except KeyError:
+        stats_copy["EntryTime"] = pd.to_datetime(stats_copy["EntryTime"])
+        stats_copy["ExitTime"] = pd.to_datetime(stats_copy["ExitTime"])
+        stats_copy = stats_copy.to_frame().T
+    except (KeyError, AttributeError) as e:
         pass
 
-    try:
-        stats_copy = stats_copy.to_frame().T
-    except AttributeError:
-        pass
     stats_copy.index = [symbol] * len(stats_copy)
     return stats_copy
 
 
 def pre_process_stock(stock: pd.DataFrame) -> pd.DataFrame:
     stock_copy = stock.copy()
+    stock_copy.Date = pd.to_datetime(stock.Date)
     stock_copy.set_index("Date", inplace=True)
-    stock_copy.index = pd.to_datetime(stock.index)
     return stock_copy
 
 
