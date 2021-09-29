@@ -8,8 +8,7 @@ from tqdm import tqdm
 from pytrader.backtester.core import Backtest, Strategy
 from pytrader.backtester.wrapper.available_analysis import ANALYSIS_ATTRIBUTES
 from pytrader.backtester.wrapper.exceptions import AnalysisNotAvailableError
-
-from .utils import (
+from pytrader.backtester.wrapper.utils import (
     post_process_stats,
     pre_process_path,
     pre_process_stock,
@@ -64,8 +63,8 @@ class BacktestWrapper:
         return self._exclusive_orders
 
     def _check_analysis(self):
-        if self._analysis_type not in ANALYSIS_ATTRIBUTES:
-            raise AnalysisNotAvailableError(self._analysis_type)
+        if self.analysis_type not in ANALYSIS_ATTRIBUTES:
+            raise AnalysisNotAvailableError(self.analysis_type)
 
     def _run(self, stock_path: str, symbol: str, plot: bool = False) -> pd.DataFrame:
         """
@@ -86,7 +85,7 @@ class BacktestWrapper:
         if plot:
             bt.plot()
         return post_process_stats(
-            stats[ANALYSIS_ATTRIBUTES[self._analysis_type]], symbol
+            stats[ANALYSIS_ATTRIBUTES[self.analysis_type]], symbol
         )
 
     def run(self, stock_path: str, plot: bool = False) -> pd.DataFrame:
@@ -110,9 +109,8 @@ class BacktestWrapper:
                     )
                 )
             except:
-                print(stock_name)
                 pass
-
+        backtest_results = backtest_results.reset_index(drop=True)
         return backtest_results
 
     def log_results(
