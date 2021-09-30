@@ -5,10 +5,10 @@ from typing import Type
 import pandas as pd
 from tqdm import tqdm
 
-from pytrader.backtester.core import Backtest, Strategy
-from pytrader.backtester.wrapper.available_analysis import ANALYSIS_ATTRIBUTES
-from pytrader.backtester.wrapper.exceptions import AnalysisNotAvailableError
-from pytrader.backtester.wrapper.utils import (
+from tradeit.backtester.core import Backtest, Strategy
+from tradeit.backtester.wrapper.available_analysis import ANALYSIS_ATTRIBUTES
+from tradeit.backtester.wrapper.exceptions import AnalysisNotAvailableError
+from tradeit.backtester.wrapper.utils import (
     post_process_stats,
     pre_process_path,
     pre_process_stock,

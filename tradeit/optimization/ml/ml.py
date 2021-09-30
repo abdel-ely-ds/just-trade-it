@@ -2,9 +2,9 @@ import pandas as pd
 from lightgbm import LGBMClassifier
 from sklearn.metrics import precision_score, recall_score
 
-from pytrader.constants import *
-from pytrader.optimization.datasets_utils import Dataset
-from pytrader.optimization.ml.utils import save
+from tradeit.constants import *
+from tradeit.optimization.datasets_utils import Dataset
+from tradeit.optimization.ml.utils import save
 
 
 class ML:

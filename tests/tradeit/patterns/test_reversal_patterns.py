@@ -1,5 +1,5 @@
-from pytrader.candlesticks import Candle
-from pytrader.patterns import OrgReversalPattern
+from tradeit.candlesticks import Candle
+from tradeit.patterns import OrgReversalPattern
 
 
 class TestReversalPatterns:

@@ -6,9 +6,9 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from pytrader.backtester.wrapper.utils import pre_process_path, pre_process_stock
-from pytrader.constants import *
-from pytrader.optimization.datasets_utils import Dataset, random_splitter
+from tradeit.backtester.wrapper.utils import pre_process_path, pre_process_stock
+from tradeit.constants import *
+from tradeit.optimization.datasets_utils import Dataset, random_splitter
 
 
 class DatasetBuilder:

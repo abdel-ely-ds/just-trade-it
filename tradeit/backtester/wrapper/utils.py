@@ -3,7 +3,7 @@ import platform
 
 import pandas as pd
 
-from pytrader.constants import *
+from tradeit.constants import *
 
 
 def post_process_stats(stats: pd.Series, symbol: str) -> pd.DataFrame:

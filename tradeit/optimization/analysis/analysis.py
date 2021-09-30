@@ -7,7 +7,7 @@ import pandas as pd
 import scipy.stats as st
 from tqdm import tqdm
 
-from pytrader.constants import *
+from tradeit.constants import *
 
 pd.options.display.float_format = "{:.3f}".format
 

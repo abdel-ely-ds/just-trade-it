@@ -1,5 +1,5 @@
-from pytrader.backtester.wrapper.available_analysis import ANALYSIS_ATTRIBUTES
-from pytrader.backtester.wrapper.exception_messages import (
+from tradeit.backtester.wrapper.available_analysis import ANALYSIS_ATTRIBUTES
+from tradeit.backtester.wrapper.exception_messages import (
     ANALYSIS_NOT_AVAILABLE_MESSAGE,
     BACKTEST_NAME_ALREADY_EXISTS,
 )

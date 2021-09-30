@@ -1,7 +1,7 @@
 from typing import List
 
-from pytrader.candlesticks import Candle
-from pytrader.patterns import IPattern
+from tradeit.candlesticks import Candle
+from tradeit.patterns import IPattern
 
 
 class OrgReversalPattern(IPattern):

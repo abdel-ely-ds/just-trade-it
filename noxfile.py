@@ -1,7 +1,7 @@
 import nox
 from nox.sessions import Session
 
-locations = "pytrader", "tests", "noxfile.py"
+locations = "tradeit", "tests", "noxfile.py"
 nox.options.sessions = "tests", "lint", "build", "blacken"
 nox.options.stop_on_first_error = True
 

@@ -2,8 +2,8 @@ import os
 
 import pytest
 
-from pytrader.backtester import BacktestWrapper
-from pytrader.strategies import Bouncing
+from tradeit.backtester import BacktestWrapper
+from tradeit.strategies import Bouncing
 
 
 @pytest.fixture

@@ -1,5 +1,5 @@
-from pytrader.backtester import Trade
-from pytrader.risk import RiskManger
+from tradeit.backtester import Trade
+from tradeit.risk import RiskManger
 
 RISK_TO_REWARD = 2.0
 RISk_PER_TRADE = 0.01

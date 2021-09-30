@@ -2,12 +2,12 @@ from typing import List
 
 import numpy as np
 
-from pytrader.backtester import Strategy
-from pytrader.candlesticks import Candle
-from pytrader.indicators import ema
-from pytrader.patterns import AnyReversalPattern
-from pytrader.risk import RiskManger
-from pytrader.strategies.utils import add_attrs
+from tradeit.backtester import Strategy
+from tradeit.candlesticks import Candle
+from tradeit.indicators import ema
+from tradeit.patterns import AnyReversalPattern
+from tradeit.risk import RiskManger
+from tradeit.strategies.utils import add_attrs
 
 UP_DAYS = 20
 WAIT = 1
