@@ -12,8 +12,7 @@ Usage
 ```python
 from tradeit.backtester import BacktestWrapper
 from tradeit.strategies import Bouncing
-from tradeit.analysis import Analyzer
-from tradeit.optimization import Dataset, DatasetBuilder, ML
+from tradeit.optimization import Analyzer, Dataset, DatasetBuilder, ML
 
 # BACKTESTING 
 btw = BacktestWrapper(strategy=Bouncing, analysis_type="MIRCRO", log_folder="/tmp/logs")
