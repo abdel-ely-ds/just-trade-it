@@ -167,7 +167,4 @@ class Analyzer:
 
     @staticmethod
     def _pre_process_results(df) -> pd.DataFrame:
-        df_copy = df.copy()
-        df_copy.index.rename(SYMBOL, inplace=True)
-        df_copy.reset_index(inplace=True)
-        return df_copy
+        return df
