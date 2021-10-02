@@ -8,17 +8,17 @@ from tqdm import tqdm
 
 from tradeit.backtester.wrapper.utils import pre_process_path, pre_process_stock
 from tradeit.constants import *
-from tradeit.optimization.datasets_utils.splitters import random_splitter
 from tradeit.optimization.datasets_utils.dataset import Dataset
+from tradeit.optimization.datasets_utils.splitters import random_splitter
 
 
 class DatasetBuilder:
     def __init__(
-            self,
-            backtest_results: pd.DataFrame,
-            stock_path: str,
-            indicators: Dict[str, Callable[..., pd.Series]],
-            splitter: Callable[..., Dataset] = random_splitter,
+        self,
+        backtest_results: pd.DataFrame,
+        stock_path: str,
+        indicators: Dict[str, Callable[..., pd.Series]],
+        splitter: Callable[..., Dataset] = random_splitter,
     ):
         self._backtest_results = backtest_results.copy()
         self._stock_path = stock_path
@@ -48,10 +48,10 @@ class DatasetBuilder:
 
     @lru_cache(maxsize=100)
     def build(
-            self,
-            history: int = 2,
-            random_state: int = 2021,
-            percentage: float = 0.8,
+        self,
+        history: int = 2,
+        random_state: int = 2021,
+        percentage: float = 0.8,
     ) -> Dataset:
         prefix_path, stock_names = pre_process_path(self.stock_path)
         x = np.array(np.zeros((1, history * len(self.indicators))))
@@ -65,7 +65,9 @@ class DatasetBuilder:
                 stock = pre_process_stock(
                     pd.read_csv(os.path.join(prefix_path, stock_name))
                 )
-                x_tmp, y_tmp = self._build(stock, stock_name.split(".")[0], history=history)
+                x_tmp, y_tmp = self._build(
+                    stock, stock_name.split(".")[0], history=history
+                )
                 x = np.append(x, x_tmp, axis=0)
                 y = np.append(y, y_tmp, axis=0)
 
@@ -78,7 +80,7 @@ class DatasetBuilder:
         )
 
     def _build(
-            self, stock: pd.DataFrame, symbol: str, history: int = 10
+        self, stock: pd.DataFrame, symbol: str, history: int = 10
     ) -> Tuple[np.array, np.array]:
         x = np.array(np.zeros((1, history * len(self.features))))
         y = np.array(
@@ -95,9 +97,9 @@ class DatasetBuilder:
             entry_bar = int(trade[ENTRY_BAR])
             x = np.append(
                 x,
-                stock.iloc[entry_bar - history: entry_bar]
-                    .to_numpy()
-                    .reshape((1, history * len(self.features))),
+                stock.iloc[entry_bar - history : entry_bar]
+                .to_numpy()
+                .reshape((1, history * len(self.features))),
                 axis=0,
             )
             y = np.append(y, trade[IS_LOSING])
