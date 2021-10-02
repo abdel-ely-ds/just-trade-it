@@ -50,7 +50,7 @@ class ML:
         )
 
         return pd.DataFrame(
-            [train_recall, train_precision, test_recall, test_precision],
+            [[train_recall, train_precision, test_recall, test_precision]],
             columns=[RECALL_TRAIN, PRECISION_TRAIN, RECALL_TEST, PRECISION_TEST],
         )
 
