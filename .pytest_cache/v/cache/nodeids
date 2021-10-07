@@ -1,3 +1,11 @@
 [
-  "tests/pytrader/backtester/wrapper/test_backtest_wrapper.py::TestBacktestWrapper::test_run"
+  "tests/tradeit/analyzer/test_analyzer.py::test_analyze",
+  "tests/tradeit/backtester/wrapper/test_backtest_wrapper.py::TestBacktestWrapper::test_run",
+  "tests/tradeit/candlesticks/test_candle.py::test_candle",
+  "tests/tradeit/patterns/test_reversal_patterns.py::TestReversalPatterns::test_org_reversal",
+  "tests/tradeit/risk/test_management.py::TestRiskManager::test_one_r",
+  "tests/tradeit/risk/test_management.py::TestRiskManager::test_shares",
+  "tests/tradeit/risk/test_management.py::TestRiskManager::test_stop_loss",
+  "tests/tradeit/risk/test_management.py::TestRiskManager::test_target",
+  "tests/tradeit/strategies/test_strategies.py::test_placeholder"
 ]

@@ -1,4 +1,4 @@
 {
-  "tests/pytrader/backtester/wrapper/test_backtest_wrapper.py": true,
-  "tests/pytrader/backtester/wrapper/test_run.py::test_run": true
+  "tests/tradeit/analyzer/test_analyzer.py::test_analyze": true,
+  "tests/tradeit/backtester/wrapper/test_backtest_wrapper.py::TestBacktestWrapper::test_run": true
 }
