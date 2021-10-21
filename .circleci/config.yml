@@ -1,16 +1,27 @@
 version: 2.1
 jobs:
   build:
-    working_directory: ~/home
     docker:
       - image: circleci/python:3.6.4
     steps:
       - checkout
-      - run: sudo pip3 install --upgrade pip
-      - run: sudo pip3 install nox==2020.8.22
-      - run: nox
-      - run: pip install zest.releaser[recommended]
-      - run: fullrelease --no-input
+      - run:
+          name: pyenv
+          command: |
+            sudo pip3 install nox==2020.8.22
+            git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+            cd ~/.pyenv && src/configure && make -C src
+            echo 'export PATH=$PYENV_ROOT/bin:$PATH' >> ~/.bashrc
+            echo 'export python38=3.8.12' >> ~/.bashrc
+            echo 'eval "$(pyenv init --path)"' >>~/.profile
+            echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+            pyenv install $python38
+      - run:
+      - run:
+          name:
+          command: |
+            source ~/.bashrc
+            nox
 
 workflows:
   version: 2
