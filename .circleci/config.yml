@@ -10,7 +10,8 @@ jobs:
           command: |
             sudo pip3 install nox==2020.8.22
             git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-            cd ~/.pyenv && src/configure && make -C src cd
+            cd ~/.pyenv && src/configure && make -C src
+            cd
             echo 'export PATH=$PYENV_ROOT/bin:$PATH' >> $BASH_ENV
             echo 'export python38=3.8.12' >> ~/.bashrc
             echo 'eval "$(pyenv init --path)"' >>~/.profile
