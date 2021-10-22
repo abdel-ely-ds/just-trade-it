@@ -34,9 +34,7 @@ jobs:
           root: /home/circleci/
           paths:
             - .pyenv
-            - .local
-            - .cache
-            - .pip
+            - project/.nox
 
 
   test:
