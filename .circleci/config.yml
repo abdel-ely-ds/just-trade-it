@@ -25,6 +25,7 @@ jobs:
             git clone https://github.com/pyenv/pyenv.git ~/.pyenv
             cd ~/.pyenv && src/configure && make -C src
             cd
+            eval "$(pyenv init --path)"
             eval "$(pyenv init -)"
       - save_cache:
           paths:
