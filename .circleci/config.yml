@@ -35,6 +35,8 @@ jobs:
           paths:
             - .pyenv
             - .local
+            - .cache
+            - .pip
 
 
   test:
