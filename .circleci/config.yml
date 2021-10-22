@@ -14,6 +14,7 @@ jobs:
             cd
             echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $BASH_ENV
             echo 'export python38=3.8.12' >> $BASH_ENV
+            source $BASH_ENV
             eval "$(pyenv init --path)"
             eval "$(pyenv init -)"
             pyenv install $python38
@@ -21,6 +22,8 @@ jobs:
           name:
           command: |
             source $BASH_ENV
+            eval "$(pyenv init --path)"
+            eval "$(pyenv init -)"
             nox
 
 
