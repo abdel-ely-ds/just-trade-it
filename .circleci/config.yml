@@ -21,8 +21,9 @@ jobs:
             sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
             libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
             libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-            pip install --no-warn-script-location --no-cache --user --upgrade nox==2020.8.22
-            [! -d "/home/circleci/.pyenv"] && git clone https://github.com/pyenv/pyenv.git ~/.pyenv && cd ~/.pyenv && src/configure && make -C src && cd
+            pip install --no-warn-script-location --no-cache --user --upgrade nox==2020.8.22 pip
+            [! -d "/home/circleci/.pyenv"] && git clone https://github.com/pyenv/pyenv.git ~/.pyenv \
+            && cd ~/.pyenv && src/configure && make -C src && cd
             eval "$(pyenv init -)"
       - save_cache:
           paths:
