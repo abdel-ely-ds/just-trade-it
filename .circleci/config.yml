@@ -11,8 +11,9 @@ jobs:
             echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $BASH_ENV
             echo 'export python38=3.6.4' >> $BASH_ENV
             source $BASH_ENV
-
-
+      -restore_cache:
+        keys:
+          - python-versions
       - run:
           name: pyenv
           command: |
@@ -24,19 +25,22 @@ jobs:
             git clone https://github.com/pyenv/pyenv.git ~/.pyenv
             cd ~/.pyenv && src/configure && make -C src
             cd
-            echo 'eval $(pyenv init --path)' >> $BASH_ENV
-            echo 'eval $(pyenv init -)' >> $BASH_ENV
-            source $BASH_ENV
-
+            eval $(pyenv init -)
+            pyenv global $python38
+      - save_cache:
+          paths:
+            - ~/.pyenv
+          keys: python-versions
       - run:
           name:
           command: |
-            pyenv global $python38
+            eval $(pyenv init -)
             nox
       - persist_to_workspace:
-          root: /tmp
+          root: $HOME
           paths:
-            - .
+            - .pyenv
+            - .local
 
 
   test:
