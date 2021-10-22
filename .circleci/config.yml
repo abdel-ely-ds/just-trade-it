@@ -11,9 +11,9 @@ jobs:
             echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $BASH_ENV
             echo 'export python38=3.6.4' >> $BASH_ENV
             source $BASH_ENV
-      -restore_cache:
-        keys:
-          - python-versions
+      - restore_cache:
+          keys:
+            - python-versions
       - run:
           name: pyenv
           command: |
@@ -30,7 +30,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.pyenv
-          keys: python-versions
+          key: python-versions
       - run:
           name:
           command: |
