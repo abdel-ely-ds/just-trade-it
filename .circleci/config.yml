@@ -25,7 +25,7 @@ jobs:
             git clone https://github.com/pyenv/pyenv.git ~/.pyenv
             cd ~/.pyenv && src/configure && make -C src
             cd
-            eval $(pyenv init -)
+            eval "$(pyenv init -)"
             pyenv global $python38
       - save_cache:
           paths:
@@ -34,7 +34,7 @@ jobs:
       - run:
           name:
           command: |
-            eval $(pyenv init -)
+            eval "$(pyenv init -)"
             nox
       - persist_to_workspace:
           root: eval $HOME
