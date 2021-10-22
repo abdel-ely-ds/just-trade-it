@@ -14,6 +14,7 @@ jobs:
             cd
             echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> ~/.bashrc
             echo 'export python38=3.8.12' >> ~/.bashrc
+            source ~/.bashrc
             eval "$(pyenv init --path)"
             eval "$(pyenv init -)"
             pyenv install 3.8.12
