@@ -8,9 +8,9 @@ jobs:
       - run:
           name: ENV
           command: |
-            echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> ~/.bashrc
-            echo 'export python38=3.6.4' >> ~/.bashrc
-            source ~/.bashrc
+            echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $BASH_ENV
+            echo 'export python38=3.6.4' >> $BASH_ENV
+            source $BASH_ENV
       - run:
           name: pyenv
           command: |
@@ -31,10 +31,9 @@ jobs:
             eval "$(pyenv init -)"
             nox
       - persist_to_workspace:
-          root: /
+          root: /home/circleci/
           paths:
-            - home/circleci/.pyenv
-            - home/circleci/.bashrc
+            - .pyenv
 
 
   test:
@@ -43,7 +42,13 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /
+          at: /home/circleci/
+      - run:
+          name: ENV
+          command: |
+            echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $BASH_ENV
+            echo 'export python38=3.6.4' >> $BASH_ENV
+            source $BASH_ENV
       - run:
           name:
           command: |
