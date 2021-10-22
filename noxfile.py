@@ -6,7 +6,7 @@ nox.options.sessions = "tests", "lint", "build", "blacken"
 nox.options.stop_on_first_error = True
 
 
-@nox.session(python=["3.9", "3.8"], reuse_venv=True)
+@nox.session(python=["3.6", "3.8"], reuse_venv=True)
 def blacken(session: Session) -> None:
     """
     Run black code formatter
