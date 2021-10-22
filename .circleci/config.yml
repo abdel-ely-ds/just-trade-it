@@ -27,10 +27,11 @@ jobs:
       - run:
           name:
           command: |
+            eval "$(pyenv init --path)"
             eval "$(pyenv init -)"
             nox
       - persist_to_workspace:
-          root: eval "$HOME"
+          root: /home/ci/
           paths:
             - .pyenv
             - .local
@@ -43,6 +44,12 @@ jobs:
       - checkout
       - attach_workspace:
           at: eval $HOME
+      - run:
+          name: ENV
+          command: |
+            echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $BASH_ENV
+            echo 'export python38=3.6.4' >> $BASH_ENV
+            source $BASH_ENV
       - run:
           name:
           command: |
