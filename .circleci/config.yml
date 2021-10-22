@@ -31,10 +31,10 @@ jobs:
             eval "$(pyenv init -)"
             nox
       - persist_to_workspace:
-          root: /home/circleci/
+          root: /
           paths:
-            - .pyenv
-            - project/.nox
+            - home/circleci/.pyenv
+            - /usr/local
 
 
   test:
