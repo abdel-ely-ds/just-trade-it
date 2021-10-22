@@ -22,18 +22,26 @@ jobs:
             libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
             libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
             sudo pip3 install nox==2020.8.22
-            [! -d "/home/circleci/.pyenv"] && git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-            cd ~/.pyenv && src/configure && make -C src && cd
+            [! -d "/home/circleci/.pyenv"] && git clone https://github.com/pyenv/pyenv.git ~/.pyenv && cd ~/.pyenv && src/configure && make -C src && cd
             eval "$(pyenv init -)"
       - save_cache:
           paths:
             - /home/circleci/.pyenv
           key: python-versions
+
+      - restore_cache:
+          keys:
+            - nox-deps
       - run:
           name:
           command: |
             eval "$(pyenv init -)"
             nox
+      - save_cache:
+          paths:
+            - /home/circleci/project/.nox/
+          key: nox-deps
+
       - persist_to_workspace:
           root: /home/circleci/
           paths:
