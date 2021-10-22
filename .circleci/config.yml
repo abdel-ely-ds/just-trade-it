@@ -34,7 +34,7 @@ jobs:
           root: /
           paths:
             - home/circleci/.pyenv
-            - /usr/local
+            - usr/local
 
 
   test:
