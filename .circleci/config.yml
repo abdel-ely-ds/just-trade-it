@@ -37,7 +37,7 @@ jobs:
             eval $(pyenv init -)
             nox
       - persist_to_workspace:
-          root: $HOME
+          root: eval $HOME
           paths:
             - .pyenv
             - .local
@@ -49,7 +49,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: $HOME
+          at: eval $HOME
       - run:
           name:
           command: |
