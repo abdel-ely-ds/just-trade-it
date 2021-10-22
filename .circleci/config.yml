@@ -26,12 +26,11 @@ jobs:
             cd
             eval "$(pyenv init --path)"
             eval "$(pyenv init -)"
-            pyenv install $python38
+
       - run:
           name:
           command: |
-            eval "$(pyenv init --path)"
-            eval "$(pyenv init -)"
+            pyenv install $python38
             nox
       - persist_to_workspace:
           root: /tmp
