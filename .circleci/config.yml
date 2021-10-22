@@ -8,9 +8,9 @@ jobs:
       - run:
           name: ENV
           command: |
-            echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $BASH_ENV
-            echo 'export python38=3.6.4' >> $BASH_ENV
-            source $BASH_ENV
+            echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> ~/.bashrc
+            echo 'export python38=3.6.4' >> ~/.bashrc
+            source ~/.bashrc
       - run:
           name: pyenv
           command: |
@@ -34,6 +34,7 @@ jobs:
           root: /
           paths:
             - home/circleci/.pyenv
+            - home/circleci/.bashrc
 
 
   test:
@@ -42,13 +43,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /home/circleci/
-      - run:
-          name: ENV
-          command: |
-            echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $BASH_ENV
-            echo 'export python38=3.6.4' >> $BASH_ENV
-            source $BASH_ENV
+          at: /
       - run:
           name:
           command: |
