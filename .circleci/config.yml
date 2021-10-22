@@ -26,7 +26,6 @@ jobs:
             cd ~/.pyenv && src/configure && make -C src
             cd
             eval "$(pyenv init -)"
-            pyenv global $python38
       - save_cache:
           paths:
             - ~/.pyenv
