@@ -9,6 +9,9 @@ jobs:
           name: pyenv
           command: |
             sudo pip3 install nox==2020.8.22
+            sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
+            libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+            libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl
             git clone https://github.com/pyenv/pyenv.git ~/.pyenv
             cd ~/.pyenv && src/configure && make -C src
             cd
@@ -18,6 +21,19 @@ jobs:
             eval "$(pyenv init --path)"
             eval "$(pyenv init -)"
             pyenv install $python38
+      - run:
+          name:
+          command: |
+            source $BASH_ENV
+            eval "$(pyenv init --path)"
+            eval "$(pyenv init -)"
+            nox
+
+  test:
+    docker:
+      - image: circleci/python:3.6.4
+    steps:
+      - checkout
       - run:
           name:
           command: |
