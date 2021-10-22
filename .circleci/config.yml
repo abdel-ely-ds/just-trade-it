@@ -28,12 +28,19 @@ jobs:
             eval "$(pyenv init --path)"
             eval "$(pyenv init -)"
             nox
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - .
+
 
   test:
     docker:
       - image: circleci/python:3.6.4
     steps:
       - checkout
+      - attach_workspace:
+          at: /tmp
       - run:
           name:
           command: |
