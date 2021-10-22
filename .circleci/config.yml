@@ -9,7 +9,7 @@ jobs:
           name: ENV
           command: |
             echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $BASH_ENV
-            echo 'export python38=3.8.12' >> $BASH_ENV
+            echo 'export python38=3.6.4' >> $BASH_ENV
             source $BASH_ENV
 
 
@@ -24,13 +24,14 @@ jobs:
             git clone https://github.com/pyenv/pyenv.git ~/.pyenv
             cd ~/.pyenv && src/configure && make -C src
             cd
-            eval "$(pyenv init --path)"
-            eval "$(pyenv init -)"
+            echo 'eval $(pyenv init --path)' >> $BASH_ENV
+            echo 'eval $(pyenv init -)' >> $BASH_ENV
+            source $BASH_ENV
 
       - run:
           name:
           command: |
-            pyenv install $python38
+            pyenv global $python38
             nox
       - persist_to_workspace:
           root: /tmp
