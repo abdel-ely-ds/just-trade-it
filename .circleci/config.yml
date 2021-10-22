@@ -8,10 +8,12 @@ jobs:
       - run:
           name: pyenv
           command: |
-            sudo pip3 install nox==2020.8.22
+            suddo apt-get update
             sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
-            libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
-            libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl openssl-dev
+            libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+            libncursesw5-dev xz-utils tk-dev libxml2-dev linxmlsec1-dev libffi-dev liblzma-dev
+            sudo pip3 install nox==2020.8.22
+
             git clone https://github.com/pyenv/pyenv.git ~/.pyenv
             cd ~/.pyenv && src/configure && make -C src
             cd
