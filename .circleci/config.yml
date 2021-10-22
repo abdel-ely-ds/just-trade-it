@@ -6,6 +6,14 @@ jobs:
     steps:
       - checkout
       - run:
+          name: ENV
+          command: |
+            echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $BASH_ENV
+            echo 'export python38=3.8.12' >> $BASH_ENV
+            source $BASH_ENV
+
+
+      - run:
           name: pyenv
           command: |
             sudo apt-get update
@@ -13,20 +21,15 @@ jobs:
             libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
             libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
             sudo pip3 install nox==2020.8.22
-
             git clone https://github.com/pyenv/pyenv.git ~/.pyenv
             cd ~/.pyenv && src/configure && make -C src
             cd
-            echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $BASH_ENV
-            echo 'export python38=3.8.12' >> $BASH_ENV
-            source $BASH_ENV
             eval "$(pyenv init --path)"
             eval "$(pyenv init -)"
             pyenv install $python38
       - run:
           name:
           command: |
-            source $BASH_ENV
             eval "$(pyenv init --path)"
             eval "$(pyenv init -)"
             nox
