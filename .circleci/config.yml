@@ -40,7 +40,7 @@ jobs:
             nox
       - save_cache:
           paths:
-            -  ./.nox/
+            -  .nox/
           key: nox-deps
 
       - persist_to_workspace:
