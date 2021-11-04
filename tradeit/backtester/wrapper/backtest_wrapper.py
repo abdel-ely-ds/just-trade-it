@@ -22,7 +22,6 @@ LOG_FOLDER = "logs"
 class BacktestWrapper:
     def __init__(
         self,
-        strategy: Type[Strategy],
         analysis_type: str = "MACRO",
         log_folder: str = LOG_FOLDER,
         cash: int = 20_000,
@@ -30,17 +29,14 @@ class BacktestWrapper:
         exclusive_orders: bool = False,
     ):
 
-        self._strategy = strategy
+        self._bt = Backtest(cash=cash, commission=commission, exclusive_orders=exclusive_orders)
         self._analysis_type = analysis_type
         self._log_folder = log_folder
-        self._cash = cash
-        self._commission = commission
-        self._exclusive_orders = exclusive_orders
         self._check_analysis()
 
     @property
-    def strategy(self):
-        return self._strategy
+    def bt(self):
+        return self._bt
 
     @property
     def analysis_type(self):
@@ -50,23 +46,11 @@ class BacktestWrapper:
     def log_folder(self):
         return self._log_folder
 
-    @property
-    def cash(self):
-        return self._cash
-
-    @property
-    def commission(self):
-        return self._commission
-
-    @property
-    def exclusive_orders(self):
-        return self._exclusive_orders
-
     def _check_analysis(self):
         if self.analysis_type not in ANALYSIS_ATTRIBUTES:
             raise AnalysisNotAvailableError(self.analysis_type)
 
-    def _run(self, stock_path: str, symbol: str, plot: bool = False) -> pd.DataFrame:
+    def _run(self, strategy: Type[Strategy], stock_path: str, symbol: str, plot: bool = False) -> pd.DataFrame:
         """
         Args:
             stock_path (str):  the path to a stock
@@ -74,21 +58,14 @@ class BacktestWrapper:
         Returns:
             [json]: the results of the backtest
         """
-        bt = Backtest(
-            pre_process_stock(pd.read_csv(stock_path)),
-            strategy=self._strategy,
-            cash=self._cash,
-            commission=self._commission,
-            exclusive_orders=self._exclusive_orders,
-        )
-        stats = bt.run()
+        stats = self.bt.run(data=pre_process_stock(pd.read_csv(stock_path)), strategy=strategy)
         if plot:
             bt.plot()
         return post_process_stats(
             stats[ANALYSIS_ATTRIBUTES[self.analysis_type]], symbol
         )
 
-    def run(self, stock_path: str, plot: bool = False) -> pd.DataFrame:
+    def run(self, strategy: Type[Strategy], stock_path: str, plot: bool = False) -> pd.DataFrame:
         """
         Args:
             stock_path: path to a stock or a folder of stocks
@@ -103,6 +80,7 @@ class BacktestWrapper:
             try:
                 backtest_results = backtest_results.append(
                     self._run(
+                        strategy,
                         os.path.join(prefix_path, stock_name),
                         stock_name.split(".")[0],
                         plot=plot,
