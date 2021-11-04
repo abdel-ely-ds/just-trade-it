@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def ema(stock: pd.DataFrame, n: int) -> pd.Series:
-    return stock["Close"].ewm(span=n, adjust=False).mean()
+    return stock["Close"].s.ewm(span=n, adjust=False).mean()
 
 
 def macd(stock: pd.DataFrame, n_fast=50, n_slow=100):

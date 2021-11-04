@@ -19,11 +19,11 @@ class Bouncing(Strategy):
     def init(self):
         # data and indicators
         price = self.data.Close
-        self.ema18 = self.I(ema, price, 18)
-        self.ema50 = self.I(ema, price, 50)
-        self.ema100 = self.I(ema, price, 100)
-        self.ema150 = self.I(ema, price, 150)
-        self.ema200 = self.I(ema, price, 200, color="red")
+        self.ema18 = self.I(ema, self.data, 18)
+        self.ema50 = self.I(ema, self.data, 50)
+        self.ema100 = self.I(ema, self.data, 100)
+        self.ema150 = self.I(ema, self.data, 150)
+        self.ema200 = self.I(ema, self.data, 200, color="red")
         self.up_days = UP_DAYS
         self.wait = WAIT
         self.risk_to_reward = RISK_TO_REWARD

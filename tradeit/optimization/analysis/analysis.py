@@ -9,6 +9,8 @@ from tqdm import tqdm
 
 from tradeit.constants import *
 
+from typing import List
+
 pd.options.display.float_format = "{:.3f}".format
 
 
@@ -145,7 +147,7 @@ class Analyzer:
 
     @staticmethod
     def _compute_equity_curve(
-        trades_returns: list[float], capital: float = 10_000
+        trades_returns: List[float], capital: float = 10_000
     ) -> pd.Series:
         """
         Used for simulation purpose
@@ -160,7 +162,7 @@ class Analyzer:
         return pd.Series(trades_returns).cumsum()
 
     def _enrich_results(self) -> None:
-        self._backtest_results[IS_LOSING] = self._backtest_results[PNL] > 0
+        self._backtest_results[IS_LOSING] = self._backtest_results[PNL] < 0
         self._backtest_results[RISK_TO_REWARD] = (
             self._backtest_results[EXIT_PRICE] - self._backtest_results[ENTRY_PRICE]
         ) / self._backtest_results[ONE_R]

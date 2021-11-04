@@ -108,7 +108,7 @@ class BacktestWrapper:
                         plot=plot,
                     )
                 )
-            except:
+            except IndexError:
                 pass
         backtest_results = backtest_results.reset_index(drop=True)
         return backtest_results

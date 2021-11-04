@@ -4,6 +4,7 @@ import platform
 import pandas as pd
 
 from tradeit.constants import *
+from typing import List, Tuple
 
 
 def post_process_stats(stats: pd.Series, symbol: str) -> pd.DataFrame:
@@ -27,7 +28,7 @@ def pre_process_stock(stock: pd.DataFrame) -> pd.DataFrame:
     return stock_copy
 
 
-def pre_process_path(stock_path: str) -> tuple[str, list[str]]:
+def pre_process_path(stock_path: str) -> Tuple[str, List[str]]:
     try:
         prefix_path = stock_path
         stock_names = os.listdir(stock_path)
