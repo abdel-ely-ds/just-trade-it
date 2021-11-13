@@ -1,4 +1,3 @@
-import setuptools
 from setuptools import setup
 
 TEST_DEPS = ["pytest==5.0.1", "pytest-runner==5.1", "pytest-cov==2.7.1", "nox"]
@@ -17,7 +16,14 @@ setup(
     include_package_data=True,
     version="1.0.0",
     packages=["t_nachine"],
-    install_requires=["numpy", "pandas >= 0.25.0, != 0.25.0", "bokeh >= 1.4.0", "tqdm >=4.62.2", "matplotlib", "scipy", "pydantic", "lightgbm", "joblib"],
+    install_requires=["numpy",
+                      "pandas >= 0.25.0, != 0.25.0",
+                      "bokeh >= 1.4.0", "tqdm >=4.62.2",
+                      "matplotlib",
+                      "scipy",
+                      "lightgbm",
+                      "joblib"],
+
     tests_require=TEST_DEPS,
     extras_require={"test": TEST_DEPS},
 )

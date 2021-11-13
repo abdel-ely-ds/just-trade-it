@@ -1,5 +1,6 @@
 .venvTrading/
 archive/
+test_stocks/
 *.csv
 *.py[cod]
 *.html

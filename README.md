@@ -4,7 +4,7 @@ Backtesting made easy: <strong>EVERYONE</strong> can backtest his strategy
 Installation
 ------------
 
-    $ pip install tradeit
+    $ pip install t_nachine
     
 Usage
 ------------
@@ -15,17 +15,21 @@ from t_nachine.strategies import Bouncing
 from t_nachine.optimization import Analyzer, Dataset, DatasetBuilder, ML
 
 # BACKTESTING 
-btw = Backtest(strategy=Bouncing, analysis_type="MIRCRO", log_folder="/tmp/logs")
-btr = btw.run(path_to_ur_stocks)
+bt = Backtest(cash=10_000)
+btr = bt.run(strategy=Bouncing, stock_path=path_to_ur_stocks)
 
 # logs results 
-btw.log_results(log_folder)
+bt.log_results(backtest_results=btr, backtest_name="bounce")
 
 # ANALYSIS 
 analyzer = Analyzer(btr)
-analyzer.win_rate()
-analyzer.stats()
+analyzer.win_rate
+analyzer.stats
 analyzer.ruin_probability()
+analyzer.losing_streak_probability()
+analyzer.winning_streak_probability()
+analyzer.plot_equity_curve()
+analyzer.plot_simulated_equity_curve()
 
 # OPTIMIZATION
 indicators = {}

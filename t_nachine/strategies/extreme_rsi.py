@@ -80,5 +80,5 @@ class ExtremeRSI(Strategy):
                 setattr(order, "placed_time", self.data.index[-1])
                 setattr(order, "placed_bar", len(self.data))
 
-        except IndexError:
+        except:
             pass
