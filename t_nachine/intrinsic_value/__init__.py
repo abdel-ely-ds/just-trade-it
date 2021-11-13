@@ -1,1 +1,1 @@
-from .dcf import DCF
+from .compute import compute
