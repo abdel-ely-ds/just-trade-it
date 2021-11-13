@@ -138,8 +138,3 @@ class DCF:
         )
 
         return round(intrinsic_value, 2)
-
-
-if __name__ == "__main__":
-    intrinsic_value_calculator = DCF()
-    print()
