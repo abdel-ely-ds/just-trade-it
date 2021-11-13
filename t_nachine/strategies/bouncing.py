@@ -141,8 +141,7 @@ class Bouncing(Strategy):
                 if self.buy_signal(candle0, candle1, candle2, support):
                     # entries and exits and number of shares
                     stop, limit, sl, tp = self.risk_manager.compute_entry_exit(
-                        above_price=candle0.high,
-                        below_price=candle1.low
+                        above_price=candle0.high, below_price=candle1.low
                     )
                     size = self.risk_manager.shares(self.equity, stop, sl)
 

@@ -4,9 +4,7 @@ from t_nachine.candlesticks import Candle
 
 
 class OrgReversalPattern:
-    def __init__(
-        self, candle: Candle, pre_candle: Candle, support: List[float]
-    ):
+    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float]):
         """
 
         Args:
@@ -39,9 +37,7 @@ class OrgReversalPattern:
 
 
 class InsideBarReversalPattern:
-    def __init__(
-        self, candle: Candle, pre_candle: Candle, support: List[float]
-    ):
+    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float]):
         """
 
         Args:
@@ -74,9 +70,7 @@ class InsideBarReversalPattern:
 
 
 class TradeThroughReversalPattern:
-    def __init__(
-        self, candle: Candle, pre_candle: Candle, support: List[float]
-    ):
+    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float]):
         """
 
         Args:
@@ -136,9 +130,7 @@ class PinReversalPattern:
 
 
 class AnyReversalPattern:
-    def __init__(
-        self, candle: Candle, pre_candle: Candle, support: List[float]
-    ):
+    def __init__(self, candle: Candle, pre_candle: Candle, support: List[float]):
         """
 
         Args:
@@ -146,7 +138,6 @@ class AnyReversalPattern:
             pre_candle (Candle): yesterday's candle
             support (List[float]): support
         """
-        super().__init__(**kwargs)
         self._candle = candle
         self._pre_candle = pre_candle
         self._support = support

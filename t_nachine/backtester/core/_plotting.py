@@ -195,13 +195,8 @@ def plot(
     indicators: List[_Indicator],
     filename="",
     plot_width=None,
-    plot_equity=True,
-    plot_return=False,
     plot_pl=True,
     plot_volume=True,
-    plot_drawdown=False,
-    smooth_equity=False,
-    relative_equity=True,
     superimpose=True,
     resample=True,
     reverse_indicators=True,
@@ -221,13 +216,10 @@ def plot(
     COLORS = [BEAR_COLOR, BULL_COLOR]
     BAR_WIDTH = 0.8
 
-    assert df.index.equals(results["_equity_curve"].index)
     equity_data = results["_equity_curve"].copy(deep=False)
     trades = results["_trades"]
 
     plot_volume = plot_volume and not df.Volume.isnull().all()
-    plot_equity = plot_equity and not trades.empty
-    plot_return = plot_return and not trades.empty
     plot_pl = plot_pl and not trades.empty
     is_datetime_index = df.index.is_all_dates
 
@@ -245,7 +237,6 @@ def plot(
     df.index.name = None  # Provides source name @index
     df["datetime"] = df.index  # Save original, maybe datetime index
     df = df.reset_index(drop=True)
-    equity_data = equity_data.reset_index(drop=True)
     index = df.index
 
     new_bokeh_figure = partial(
@@ -356,148 +347,6 @@ return this.labels[index] || "";
                 mode="vline" if vline else "mouse",
             )
         )
-
-    def _plot_equity_section(is_return=False):
-        """Equity section"""
-        # Max DD Dur. line
-        equity = equity_data["Equity"].copy()
-        dd_end = equity_data["DrawdownDuration"].idxmax()
-        if np.isnan(dd_end):
-            dd_start = dd_end = equity.index[0]
-        else:
-            dd_start = equity[:dd_end].idxmax()
-            # If DD not extending into the future, get exact point of intersection with equity
-            if dd_end != equity.index[-1]:
-                dd_end = np.interp(
-                    equity[dd_start],
-                    (equity[dd_end - 1], equity[dd_end]),
-                    (dd_end - 1, dd_end),
-                )
-
-        if smooth_equity:
-            interest_points = pd.Index(
-                [
-                    # Beginning and end
-                    equity.index[0],
-                    equity.index[-1],
-                    # Peak equity and peak DD
-                    equity.idxmax(),
-                    equity_data["DrawdownPct"].idxmax(),
-                    # Include max dd end points. Otherwise the MaxDD line looks amiss.
-                    dd_start,
-                    int(dd_end),
-                    min(int(dd_end + 1), equity.size - 1),
-                ]
-            )
-            select = pd.Index(trades["ExitBar"]) | interest_points
-            select = select.unique().dropna()
-            equity = equity.iloc[select].reindex(equity.index)
-            equity.interpolate(inplace=True)
-
-        assert equity.index.equals(equity_data.index)
-
-        if relative_equity:
-            equity /= equity.iloc[0]
-        if is_return:
-            equity -= equity.iloc[0]
-
-        yaxis_label = "Return" if is_return else "Equity"
-        source_key = "eq_return" if is_return else "equity"
-        source.add(equity, source_key)
-        fig = new_indicator_figure(
-            y_axis_label=yaxis_label, **({} if plot_drawdown else dict(plot_height=110))
-        )
-
-        # High-watermark drawdown dents
-        fig.patch(
-            "index",
-            "equity_dd",
-            source=ColumnDataSource(
-                dict(
-                    index=np.r_[index, index[::-1]],
-                    equity_dd=np.r_[equity, equity.cummax()[::-1]],
-                )
-            ),
-            fill_color="#ffffea",
-            line_color="#ffcb66",
-        )
-
-        # Equity line
-        r = fig.line("index", source_key, source=source, line_width=1.5, line_alpha=1)
-        if relative_equity:
-            tooltip_format = f"@{source_key}{{+0,0.[000]%}}"
-            tick_format = "0,0.[00]%"
-            legend_format = "{:,.0f}%"
-        else:
-            tooltip_format = f"@{source_key}{{$ 0,0}}"
-            tick_format = "$ 0.0 a"
-            legend_format = "${:,.0f}"
-        set_tooltips(fig, [(yaxis_label, tooltip_format)], renderers=[r])
-        fig.yaxis.formatter = NumeralTickFormatter(format=tick_format)
-
-        # Peaks
-        argmax = equity.idxmax()
-        fig.scatter(
-            argmax,
-            equity[argmax],
-            legend_label="Peak ({})".format(
-                legend_format.format(equity[argmax] * (100 if relative_equity else 1))
-            ),
-            color="cyan",
-            size=8,
-        )
-        fig.scatter(
-            index[-1],
-            equity.values[-1],
-            legend_label="Final ({})".format(
-                legend_format.format(equity.iloc[-1] * (100 if relative_equity else 1))
-            ),
-            color="blue",
-            size=8,
-        )
-
-        if not plot_drawdown:
-            drawdown = equity_data["DrawdownPct"]
-            argmax = drawdown.idxmax()
-            fig.scatter(
-                argmax,
-                equity[argmax],
-                legend_label="Max Drawdown (-{:.1f}%)".format(100 * drawdown[argmax]),
-                color="red",
-                size=8,
-            )
-        dd_timedelta_label = (
-            df["datetime"].iloc[int(round(dd_end))] - df["datetime"].iloc[dd_start]
-        )
-        fig.line(
-            [dd_start, dd_end],
-            equity.iloc[dd_start],
-            line_color="red",
-            line_width=2,
-            legend_label=f"Max Dd Dur. ({dd_timedelta_label})".replace(
-                " 00:00:00", ""
-            ).replace("(0 days ", "("),
-        )
-
-        figs_above_ohlc.append(fig)
-
-    def _plot_drawdown_section():
-        """Drawdown section"""
-        fig = new_indicator_figure(y_axis_label="Drawdown")
-        drawdown = equity_data["DrawdownPct"]
-        argmax = drawdown.idxmax()
-        source.add(drawdown, "drawdown")
-        r = fig.line("index", "drawdown", source=source, line_width=1.3)
-        fig.scatter(
-            argmax,
-            drawdown[argmax],
-            legend_label="Peak (-{:.1f}%)".format(100 * drawdown[argmax]),
-            color="red",
-            size=8,
-        )
-        set_tooltips(fig, [("Drawdown", "@drawdown{-0.[0]%}")], renderers=[r])
-        fig.yaxis.formatter = NumeralTickFormatter(format="-0.[0]%")
-        return fig
 
     def _plot_pl_section():
         """Profit/Loss markers section"""
@@ -789,16 +638,6 @@ return this.labels[index] || "";
         return indicator_figs
 
     # Construct figure ...
-
-    if plot_equity:
-        _plot_equity_section()
-
-    if plot_return:
-        _plot_equity_section(is_return=True)
-
-    if plot_drawdown:
-        figs_above_ohlc.append(_plot_drawdown_section())
-
     if plot_pl:
         figs_above_ohlc.append(_plot_pl_section())
 

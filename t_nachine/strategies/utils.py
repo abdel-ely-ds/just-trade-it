@@ -35,10 +35,10 @@ def add_attrs(
     trade: Trade,
     high,
     low,
-    volume,
     risk_manager: RiskManger = RiskManger(
         risk_to_reward=RISK_TO_REWARD, risk_per_trade=RISk_PER_TRADE
     ),
+    **kwargs,
 ) -> None:
     """
     it adds some attributes to the trade for post optimization
@@ -56,9 +56,10 @@ def add_attrs(
         one_r = risk_manager.one_r(trade.entry_price, trade.sl)
         setattr(trade, "one_r", one_r)
 
-    # add volume
-    if not hasattr(trade, "volume"):
-        setattr(trade, "volume", volume)
+    # add **kwargs
+    for key, value in kwargs.items():
+        if not hasattr(trade, key):
+            setattr(trade, key, value)
 
     # track max positive pnl
     try:
