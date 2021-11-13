@@ -10,12 +10,12 @@ Usage
 ------------
 
 ```python
-from tradeit.backtester import BacktestWrapper
-from tradeit.strategies import Bouncing
-from tradeit.optimization import Analyzer, Dataset, DatasetBuilder, ML
+from t_nachine.backtester import Backtest
+from t_nachine.strategies import Bouncing
+from t_nachine.optimization import Analyzer, Dataset, DatasetBuilder, ML
 
 # BACKTESTING 
-btw = BacktestWrapper(strategy=Bouncing, analysis_type="MIRCRO", log_folder="/tmp/logs")
+btw = Backtest(strategy=Bouncing, analysis_type="MIRCRO", log_folder="/tmp/logs")
 btr = btw.run(path_to_ur_stocks)
 
 # logs results 
