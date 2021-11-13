@@ -2,9 +2,9 @@ import pandas as pd
 from lightgbm import LGBMClassifier
 from sklearn.metrics import precision_score, recall_score
 
-from tradeit.constants import *
-from tradeit.optimization.datasets_utils import Dataset
-from tradeit.optimization.ml.utils import save
+from t_nachine.constants import *
+from t_nachine.optimization.datasets_utils import Dataset
+from t_nachine.optimization.ml.utils import save
 
 
 class ML:

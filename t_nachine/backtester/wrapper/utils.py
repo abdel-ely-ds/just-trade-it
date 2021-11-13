@@ -3,7 +3,7 @@ import platform
 
 import pandas as pd
 
-from tradeit.constants import *
+from t_nachine.constants import *
 from typing import List, Tuple
 
 

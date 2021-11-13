@@ -1,5 +1,5 @@
-from tradeit.backtester import Trade
-from tradeit.risk import RiskManger
+from t_nachine.backtester import Trade
+from t_nachine.risk import RiskManger
 
 RISK_TO_REWARD = 2.0
 RISk_PER_TRADE = 0.01
@@ -28,7 +28,7 @@ def add_attrs(
         one_r = risk_manager.one_r(trade.entry_price, trade.sl)
         setattr(trade, "one_r", one_r)
 
-    # track pnl
+    # track max positive pnl
     try:
         trade.max_pnl = max(high - trade.entry_price, trade.max_pnl)
     except AttributeError:

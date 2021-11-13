@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.utils import shuffle
 
-from tradeit.optimization.datasets_utils.dataset import Dataset
+from t_nachine.optimization.datasets_utils.dataset import Dataset
 
 
 def random_splitter(

@@ -2,13 +2,13 @@ import os
 
 import pytest
 
-from tradeit.backtester import BacktestWrapper
-from tradeit.strategies import Bouncing
+from t_nachine.backtester import Backtest
+from t_nachine.strategies import Bouncing
 
 
 @pytest.fixture
 def backtest_wrapper():
-    return BacktestWrapper(strategy=Bouncing, analysis_type="MICRO")
+    return Backtest(strategy=Bouncing, analysis_type="MICRO")
 
 
 STOCK_PATH = os.path.join("stocks")

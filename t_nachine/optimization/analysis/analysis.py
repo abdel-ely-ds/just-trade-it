@@ -7,7 +7,7 @@ import pandas as pd
 import scipy.stats as st
 from tqdm import tqdm
 
-from tradeit.constants import *
+from t_nachine.constants import *
 
 from typing import List
 
@@ -19,13 +19,19 @@ class Analyzer:
         self._backtest_results = self._pre_process_results(backtest_results)
         self._enrich_results()
 
-    def win_rate(self) -> float:
-        return self._backtest_results[IS_LOSING].mean()
+    @property
+    def backtest_results(self) -> pd.DataFrame:
+        return self._backtest_results
 
+    @property
+    def win_rate(self) -> float:
+        return self._backtest_results[WINNING].mean()
+
+    @property
     def stats(self) -> pd.DataFrame:
-        func = [MEAN, MIN, MAX, STD]
+        func = [MEAN, MEDIAN, MIN, MAX, STD]
         columns = [DURATION, RISK_TO_REWARD]
-        return self._backtest_results.groupby(IS_LOSING)[columns].agg(func)
+        return self._backtest_results.groupby(WINNING)[columns].agg(func)
 
     def missed_tp_by(self) -> pd.Series:
         """
@@ -33,7 +39,7 @@ class Analyzer:
         (ex: a losing trades that at some point had a pnl=+1.2*One_R -> distance_to_tp = risk_to_reward * One_R - PNL
 
         """
-        losing_trades = self._backtest_results[IS_LOSING]
+        losing_trades = self._backtest_results[~self._backtest_results[WINNING]]
         return (losing_trades[MAX_PNL] / losing_trades[ONE_R]).describe()
 
     def plot_equity_curve(self, capital: float = 10_000, symbol: str = "") -> None:
@@ -52,8 +58,11 @@ class Analyzer:
         stock = self._backtest_results[self._backtest_results[SYMBOL] == symbol]
         equity_curve = stock.groupby(EXIT_TIME)[PNL].sum()
         equity_curve.iloc[0] = equity_curve.iloc[0] + capital
+        plt.rcParams["figure.figsize"] = (8, 4)
+
         plt.plot(equity_curve.cumsum())
         plt.grid()
+        plt.xticks(rotation=90)
         plt.title(f"Equity Curve of {symbol.upper()}")
         plt.xlabel("time")
         plt.ylabel("equity €")
@@ -61,7 +70,7 @@ class Analyzer:
     def ruin_probability(
         self,
         capital: float = 10_000,
-        ruin_level: float = 0.5,
+        ruin_level: float = 0.7,
         risk_per_trade: float = 0.01,
         nb_simulations: int = 1000,
         nb_trades: int = 1000,
@@ -103,12 +112,12 @@ class Analyzer:
             nb_trades=nb_trades,
         )
 
-        mean_equity_curve = equity_curves.mean(axis=0)
+        mean_equity_curve = equity_curves.mean(axis=1)
         conf_int = st.t.interval(
             0.99,
-            equity_curves.shape[1] - 1,
-            loc=equity_curves.mean(axis=0),
-            scale=st.sem(equity_curves, axis=0),
+            equity_curves.shape[0] - 1,
+            loc=equity_curves.mean(axis=1),
+            scale=st.sem(equity_curves, axis=1),
         )
         lower_band = [conf_int[0][i] for i in range(nb_trades)]
         upper_band = [conf_int[1][i] for i in range(nb_trades)]
@@ -162,10 +171,13 @@ class Analyzer:
         return pd.Series(trades_returns).cumsum()
 
     def _enrich_results(self) -> None:
-        self._backtest_results[IS_LOSING] = self._backtest_results[PNL] < 0
+        self._backtest_results[DURATION] = self._backtest_results[EXIT_BAR] - self._backtest_results[ENTRY_BAR]
+        self._backtest_results[WINNING] = self._backtest_results[PNL] > 0
         self._backtest_results[RISK_TO_REWARD] = (
             self._backtest_results[EXIT_PRICE] - self._backtest_results[ENTRY_PRICE]
         ) / self._backtest_results[ONE_R]
+
+        self._backtest_results.drop_duplicates(inplace=True)
 
     @staticmethod
     def _pre_process_results(df) -> pd.DataFrame:

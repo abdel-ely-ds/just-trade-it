@@ -1,14 +1,14 @@
 import os
 import warnings
 from typing import Type
-#yes
 import pandas as pd
 from tqdm import tqdm
 
-from tradeit.backtester.core import Backtest, Strategy
-from tradeit.backtester.wrapper.available_analysis import ANALYSIS_ATTRIBUTES
-from tradeit.backtester.wrapper.exceptions import AnalysisNotAvailableError
-from tradeit.backtester.wrapper.utils import (
+from t_nachine.backtester.core.backtest import Backtest as BacktestCore
+from t_nachine.backtester.core.strategy import Strategy
+from t_nachine.backtester.wrapper.available_analysis import ANALYSIS_ATTRIBUTES
+from t_nachine.backtester.wrapper.exceptions import AnalysisNotAvailableError
+from t_nachine.backtester.wrapper.utils import (
     post_process_stats,
     pre_process_path,
     pre_process_stock,
@@ -19,7 +19,7 @@ warnings.filterwarnings("ignore")
 LOG_FOLDER = "logs"
 
 
-class BacktestWrapper:
+class Backtest:
     def __init__(
         self,
         analysis_type: str = "MACRO",
@@ -29,7 +29,7 @@ class BacktestWrapper:
         exclusive_orders: bool = False,
     ):
 
-        self._bt = Backtest(cash=cash, commission=commission, exclusive_orders=exclusive_orders)
+        self._bt = BacktestCore(cash=cash, commission=commission, exclusive_orders=exclusive_orders)
         self._analysis_type = analysis_type
         self._log_folder = log_folder
         self._check_analysis()
@@ -50,26 +50,18 @@ class BacktestWrapper:
         if self.analysis_type not in ANALYSIS_ATTRIBUTES:
             raise AnalysisNotAvailableError(self.analysis_type)
 
-    def _run(self, strategy: Type[Strategy], stock_path: str, symbol: str, plot: bool = False) -> pd.DataFrame:
-        """
-        Args:
-            stock_path (str):  the path to a stock
+    def _run(self, strategy: Type[Strategy], stock_path: str, symbol: str) -> pd.DataFrame:
 
-        Returns:
-            [json]: the results of the backtest
-        """
         stats = self.bt.run(data=pre_process_stock(pd.read_csv(stock_path)), strategy=strategy)
-        if plot:
-            bt.plot()
         return post_process_stats(
             stats[ANALYSIS_ATTRIBUTES[self.analysis_type]], symbol
         )
 
-    def run(self, strategy: Type[Strategy], stock_path: str, plot: bool = False) -> pd.DataFrame:
+    def run(self, strategy: Type[Strategy], stock_path: str) -> pd.DataFrame:
         """
         Args:
+            strategy: strategy to backtest
             stock_path: path to a stock or a folder of stocks
-            plot: plot or not
         Returns:
             [pd.DataFrame]: the results of the backtest for each stock
         """
@@ -82,8 +74,7 @@ class BacktestWrapper:
                     self._run(
                         strategy,
                         os.path.join(prefix_path, stock_name),
-                        stock_name.split(".")[0],
-                        plot=plot,
+                        stock_name.split(".")[0]
                     )
                 )
             except IndexError:
@@ -105,5 +96,6 @@ class BacktestWrapper:
         backtest_results.to_csv(
             os.path.join(
                 set_log_folder(log_folder=self._log_folder), backtest_name + ext
-            )
+            ),
+            index=False
         )

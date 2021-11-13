@@ -2,12 +2,12 @@ from typing import List
 
 import numpy as np
 
-from tradeit.backtester import Strategy
-from tradeit.candlesticks import Candle
-from tradeit.indicators import ema
-from tradeit.patterns import AnyReversalPattern
-from tradeit.risk import RiskManger
-from tradeit.strategies.utils import add_attrs
+from t_nachine.backtester import Strategy
+from t_nachine.candlesticks.candle import Candle
+from t_nachine.indicators import ema
+from t_nachine.patterns import AnyReversalPattern
+from t_nachine.risk import RiskManger
+from t_nachine.strategies.utils import add_attrs
 
 UP_DAYS = 20
 WAIT = 1

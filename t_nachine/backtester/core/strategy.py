@@ -3,8 +3,8 @@ from abc import ABCMeta, abstractmethod
 from itertools import chain
 from typing import Callable, Tuple
 import numpy as np
-from tradeit.backtester.core._util import _Data, _as_str, try_, _Indicator
-from tradeit.backtester.core.backtesting import _Broker, Trade, Order, _Orders, Position
+from t_nachine.backtester.core._util import _Data, _as_str, try_, _Indicator
+from t_nachine.backtester.core.backtesting import _Broker, Trade, Order, _Orders, Position
 import pandas as pd
 
 

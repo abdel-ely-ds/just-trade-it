@@ -1,7 +1,7 @@
 from typing import List
 
-from tradeit.candlesticks import Candle
-from tradeit.patterns import IPattern
+from t_nachine.candlesticks import Candle
+from t_nachine.patterns import IPattern
 
 
 class OrgReversalPattern(IPattern):
