@@ -1,5 +1,6 @@
 import math
 from collections import OrderedDict
+from typing import Tuple
 
 import numpy as np
 
@@ -14,14 +15,14 @@ class RiskManger:
     """
 
     def __init__(
-        self,
-        risk_to_reward: float = 2.0,
-        risk_per_trade: float = 0.01,
-        sl_lookup_table: dict = STOP_LOSS_LOOKUP_TABLE,
+            self,
+            risk_to_reward: float = 2.0,
+            risk_per_trade: float = 0.01,
+            sl_lookup_table: dict = None,
     ):
         self._risk2reward = risk_to_reward
         self._risk = risk_per_trade
-        self._sl_lookup_table = sl_lookup_table
+        self._sl_lookup_table = sl_lookup_table if sl_lookup_table is not None else STOP_LOSS_LOOKUP_TABLE
 
     def stop_loss(self, price: float) -> float:
         """
@@ -90,3 +91,12 @@ class RiskManger:
             [int]: share size
         """
         return np.ceil(self._risk * capital / self.one_r(entry, stop_loss))
+
+    def compute_entry_exit(self, above_price: float, below_price: float):
+        assert above_price > below_price, "above price should be bigger than below price"
+        stop = self.entry_price(above_price)
+        limit = self.entry_price(above_price, limit=2)
+        sl = self.stop_loss(below_price)
+        tp = self.target(stop, sl)
+
+        return stop, limit, sl, tp
