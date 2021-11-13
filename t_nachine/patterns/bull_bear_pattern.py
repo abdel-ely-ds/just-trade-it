@@ -1,19 +1,14 @@
-from typing import List
-
 from t_nachine.candlesticks import Candle
-from t_nachine.patterns import IPattern
 
 
-class BullBearPattern(IPattern):
-    def __init__(self, candle: Candle, pre_candle: Candle, **kwargs):
+class BullBearPattern:
+    def __init__(self, candle: Candle, pre_candle: Candle):
         """
 
         Args:
             candle (Candle): today's candle
             pre_candle (Candle): yesterday's candle
-            support (List[float]): support
         """
-        super().__init__(**kwargs)
         self._candle = candle
         self._pre_candle = pre_candle
 

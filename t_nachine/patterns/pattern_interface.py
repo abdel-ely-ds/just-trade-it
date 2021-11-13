@@ -1,15 +1,12 @@
-from abc import ABC, abstractmethod
+from typing import Protocol
 
 
-class IPattern(ABC):
-    @abstractmethod
+class Pattern(Protocol):
     def __init__(self, **kwargs):
-        pass
+        ...
 
-    @abstractmethod
     def __bool__(self):
-        pass
+        ...
 
-    @abstractmethod
     def __eq__(self, o: object) -> bool:
-        pass
+        ...

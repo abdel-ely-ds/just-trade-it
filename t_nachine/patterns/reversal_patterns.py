@@ -1,12 +1,11 @@
 from typing import List
 
 from t_nachine.candlesticks import Candle
-from t_nachine.patterns import IPattern
 
 
-class OrgReversalPattern(IPattern):
+class OrgReversalPattern:
     def __init__(
-        self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs
+        self, candle: Candle, pre_candle: Candle, support: List[float]
     ):
         """
 
@@ -15,7 +14,6 @@ class OrgReversalPattern(IPattern):
             pre_candle (Candle): yesterday's candle
             support (List[float]): support
         """
-        super().__init__(**kwargs)
         self._candle = candle
         self._pre_candle = pre_candle
         self._support = support
@@ -40,9 +38,9 @@ class OrgReversalPattern(IPattern):
         return isinstance(o, bool) and self.__bool__() == o
 
 
-class InsideBarReversalPattern(IPattern):
+class InsideBarReversalPattern:
     def __init__(
-        self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs
+        self, candle: Candle, pre_candle: Candle, support: List[float]
     ):
         """
 
@@ -51,7 +49,6 @@ class InsideBarReversalPattern(IPattern):
             pre_candle (Candle): yesterday's candle
             support (List[float]): support
         """
-        super().__init__(**kwargs)
         self._candle = candle
         self._pre_candle = pre_candle
         self._support = support
@@ -76,9 +73,9 @@ class InsideBarReversalPattern(IPattern):
         return isinstance(o, bool) and self.__bool__() == o
 
 
-class TradeThroughReversalPattern(IPattern):
+class TradeThroughReversalPattern:
     def __init__(
-        self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs
+        self, candle: Candle, pre_candle: Candle, support: List[float]
     ):
         """
 
@@ -87,7 +84,6 @@ class TradeThroughReversalPattern(IPattern):
             pre_candle (Candle): yesterday's candle
             support (List[float]): support
         """
-        super().__init__(**kwargs)
         self._candle = candle
         self._pre_candle = pre_candle
         self._support = support
@@ -115,16 +111,14 @@ class TradeThroughReversalPattern(IPattern):
         return isinstance(o, bool) and self.__bool__() == o
 
 
-class PinReversalPattern(IPattern):
-    def __init__(self, candle: Candle, support: List[float], **kwargs):
+class PinReversalPattern:
+    def __init__(self, candle: Candle, support: List[float]):
         """
 
         Args:
             candle (Candle): today's candle
-            pre_candle (Candle): yesterday's candle
             support (List[float]): support
         """
-        super().__init__(**kwargs)
         self._candle = candle
         self._support = support
 
@@ -141,9 +135,9 @@ class PinReversalPattern(IPattern):
         return isinstance(o, bool) and self.__bool__() == o
 
 
-class AnyReversalPattern(IPattern):
+class AnyReversalPattern:
     def __init__(
-        self, candle: Candle, pre_candle: Candle, support: List[float], **kwargs
+        self, candle: Candle, pre_candle: Candle, support: List[float]
     ):
         """
 

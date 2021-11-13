@@ -23,15 +23,15 @@ class ExtremeRSI(Strategy):
         )
 
     def cancel(
-        self,
+            self,
     ) -> None:
         """
         wait until <self.wait> days then cancel order if not executed
         """
         for order in self.orders:
             if (
-                not order.is_contingent
-                and len(self.data) - order.placed_bar >= self.wait
+                    not order.is_contingent
+                    and len(self.data) - order.placed_bar >= self.wait
             ):
                 order.cancel()
 
@@ -68,7 +68,6 @@ class ExtremeRSI(Strategy):
         try:
             candle0, candle1 = get_candles(self.data, days=2)
             if self.buy_signal(candle0, candle1):
-
                 # entries and exits and number of shares
                 stop = self.risk_manager.entry_price(candle0.high)
                 limit = self.risk_manager.entry_price(candle0.high, limit=2)
