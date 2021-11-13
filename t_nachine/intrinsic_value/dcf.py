@@ -98,8 +98,8 @@ class DCF:
         beta: float,
         risk_free_rate: float,
         market_risk_premium: float,
-        factor: float,
-        n: int,
+        factor: float = 1.2,
+        n: int = 10,
     ) -> float:
         discount_rate = self.compute_discount_rate(
             risk_free_rate=risk_free_rate,
@@ -123,7 +123,7 @@ class DCF:
         )
 
         final_discount_factor = self.compute_discount_factor(
-            discount_rate=discount_rate, n=10
+            discount_rate=discount_rate, n=n
         )
 
         final_discounted_perpetuity_value = self.computed_discounted_perpetuity_value(
