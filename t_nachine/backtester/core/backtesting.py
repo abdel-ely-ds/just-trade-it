@@ -23,6 +23,7 @@ except ImportError:
     def _tqdm(seq, **_):
         return seq
 
+
 from ._util import _Data
 
 __pdoc__ = {

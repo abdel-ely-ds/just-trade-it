@@ -1,5 +1,6 @@
 .venvTrading/
-
+archive/
+*.csv
 *.py[cod]
 *.html
 *.png

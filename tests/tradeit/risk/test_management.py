@@ -1,7 +1,7 @@
 import pytest
 
-from tradeit.risk import STOP_LOSS_LOOKUP_TABLE, RiskManger
-from tradeit.strategies.bouncing import RISK_PER_TRADE, RISK_TO_REWARD
+from t_nachine.risk import STOP_LOSS_LOOKUP_TABLE, RiskManger
+from t_nachine.strategies.bouncing import RISK_PER_TRADE, RISK_TO_REWARD
 
 
 @pytest.fixture

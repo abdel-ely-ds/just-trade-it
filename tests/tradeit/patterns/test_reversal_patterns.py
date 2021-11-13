@@ -1,5 +1,5 @@
-from tradeit.candlesticks import Candle
-from tradeit.patterns import OrgReversalPattern
+from t_nachine.candlesticks import Candle
+from t_nachine.patterns import OrgReversalPattern
 
 
 class TestReversalPatterns:

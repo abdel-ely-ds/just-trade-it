@@ -4,7 +4,13 @@ from itertools import chain
 from typing import Callable, Tuple
 import numpy as np
 from t_nachine.backtester.core._util import _Data, _as_str, try_, _Indicator
-from t_nachine.backtester.core.backtesting import _Broker, Trade, Order, _Orders, Position
+from t_nachine.backtester.core.backtesting import (
+    _Broker,
+    Trade,
+    Order,
+    _Orders,
+    Position,
+)
 import pandas as pd
 
 
@@ -47,15 +53,15 @@ class Strategy(metaclass=ABCMeta):
         return params
 
     def I(
-            self,  # noqa: E741, E743
-            func: Callable,
-            *args,
-            name=None,
-            plot=True,
-            overlay=None,
-            color=None,
-            scatter=False,
-            **kwargs,
+        self,  # noqa: E741, E743
+        func: Callable,
+        *args,
+        name=None,
+        plot=True,
+        overlay=None,
+        color=None,
+        scatter=False,
+        **kwargs,
     ) -> np.ndarray:
         """
         Declare indicator. An indicator is just an array of values,
@@ -120,9 +126,9 @@ class Strategy(metaclass=ABCMeta):
             value = value.T
 
         if (
-                not is_arraylike
-                or not 1 <= value.ndim <= 2
-                or value.shape[-1] != len(self._data.Close)
+            not is_arraylike
+            or not 1 <= value.ndim <= 2
+            or value.shape[-1] != len(self._data.Close)
         ):
             raise ValueError(
                 "Indicators must return (optionally a tuple of) numpy.arrays of same "
@@ -182,13 +188,13 @@ class Strategy(metaclass=ABCMeta):
         """
 
     def buy(
-            self,
-            *,
-            size: float = 1 - sys.float_info.epsilon,
-            limit: float = None,
-            stop: float = None,
-            sl: float = None,
-            tp: float = None,
+        self,
+        *,
+        size: float = 1 - sys.float_info.epsilon,
+        limit: float = None,
+        stop: float = None,
+        sl: float = None,
+        tp: float = None,
     ):
         """
         Place a new long order. For explanation of parameters, see `Order` and its properties.
@@ -196,18 +202,18 @@ class Strategy(metaclass=ABCMeta):
         See also `Strategy.sell()`.
         """
         assert (
-                0 < size < 1 or round(size) == size
+            0 < size < 1 or round(size) == size
         ), "size must be a positive fraction of equity, or a positive whole number of units"
         return self._broker.new_order(size, limit, stop, sl, tp)
 
     def sell(
-            self,
-            *,
-            size: float = 1 - sys.float_info.epsilon,
-            limit: float = None,
-            stop: float = None,
-            sl: float = None,
-            tp: float = None,
+        self,
+        *,
+        size: float = 1 - sys.float_info.epsilon,
+        limit: float = None,
+        stop: float = None,
+        sl: float = None,
+        tp: float = None,
     ):
         """
         Place a new short order. For explanation of parameters, see `Order` and its properties.
@@ -215,7 +221,7 @@ class Strategy(metaclass=ABCMeta):
         See also `Strategy.buy()`.
         """
         assert (
-                0 < size < 1 or round(size) == size
+            0 < size < 1 or round(size) == size
         ), "size must be a positive fraction of equity, or a positive whole number of units"
         return self._broker.new_order(-size, limit, stop, sl, tp)
 

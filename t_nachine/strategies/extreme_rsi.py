@@ -1,11 +1,9 @@
-from typing import List
-
 from t_nachine.backtester import Strategy
 from t_nachine.candlesticks import Candle
 from t_nachine.indicators import rsi
 from t_nachine.patterns import BullBearPattern
 from t_nachine.risk import RiskManger
-from t_nachine.strategies.utils import add_attrs
+from t_nachine.strategies.utils import add_attrs, get_candles
 
 WAIT = 1
 RISK_PER_TRADE = 0.01
@@ -37,26 +35,6 @@ class ExtremeRSI(Strategy):
             ):
                 order.cancel()
 
-    def get_candles(self, days: int = 3) -> List[Candle]:
-        """
-        returns the last candles
-
-        Args:
-            days (int, optional): days. Defaults to 3.
-
-        Returns:
-            List[Candle]: last candles
-        """
-        return [
-            Candle(
-                self.data.Open[-i],
-                self.data.High[-i],
-                self.data.Low[-i],
-                self.data.Close[-i],
-            )
-            for i in range(1, days + 1)
-        ]
-
     def buy_signal(self, candle0: Candle, candle1: Candle) -> bool:
         """
         buy signal
@@ -78,13 +56,19 @@ class ExtremeRSI(Strategy):
         # cancel pending orders
         self.cancel()
 
-        # add one_r attribute
+        # add attributes
         for trade in self.trades:
-            add_attrs(trade=trade, high=self.data.High[-1], low=self.data.Low[-1])
+            add_attrs(
+                trade=trade,
+                high=self.data.High[-1],
+                low=self.data.Low[-1],
+                volume=self.data.Volume[-1],
+            )
 
         try:
-            candle0, candle1 = self.get_candles(days=2)
+            candle0, candle1 = get_candles(self.data, days=2)
             if self.buy_signal(candle0, candle1):
+
                 # entries and exits and number of shares
                 stop = self.risk_manager.entry_price(candle0.high)
                 limit = self.risk_manager.entry_price(candle0.high, limit=2)

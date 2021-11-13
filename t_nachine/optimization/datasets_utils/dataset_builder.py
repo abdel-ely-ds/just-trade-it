@@ -12,16 +12,16 @@ from t_nachine.constants import *
 from t_nachine.optimization.datasets_utils.dataset import Dataset
 from t_nachine.optimization.datasets_utils.splitters import random_splitter
 
-FEATURES = ['stochs', 'rsi', 'macd50_100', 'macd50_100_signal', 'bullish']
+FEATURES = ["stochs", "rsi", "macd50_100", "macd50_100_signal", "bullish"]
 
 
 class DatasetBuilder:
     def __init__(
-            self,
-            backtest_results: pd.DataFrame,
-            stock_path: str,
-            indicators: Dict[str, Callable[..., pd.Series]],
-            splitter: Callable[..., Dataset] = random_splitter,
+        self,
+        backtest_results: pd.DataFrame,
+        stock_path: str,
+        indicators: Dict[str, Callable[..., pd.Series]],
+        splitter: Callable[..., Dataset] = random_splitter,
     ):
         self._backtest_results = backtest_results.copy()
         self._stock_path = stock_path
@@ -58,34 +58,43 @@ class DatasetBuilder:
 
         # supports
         for i in [50, 100]:
-            df_copy['EMA' + str(i)] = df_copy['Close'].ewm(span=i, adjust=False).mean()
+            df_copy["EMA" + str(i)] = df_copy["Close"].ewm(span=i, adjust=False).mean()
 
-        df_copy['stochs'] = STOCHASTICS(df_copy, 5, 3)
-        df_copy['rsi'] = RSI(df_copy['Close'], n=2)
-        df_copy['macd50_100'] = df_copy['EMA50'] - df_copy['EMA100']
-        df_copy['macd50_100_signal'] = df_copy['macd50_100'].ewm(span=9, adjust=False).mean()
-        df_copy['bullish'] = df_copy['macd50_100'] > df_copy['macd50_100_signal']
+        df_copy["stochs"] = STOCHASTICS(df_copy, 5, 3)
+        df_copy["rsi"] = RSI(df_copy["Close"], n=2)
+        df_copy["macd50_100"] = df_copy["EMA50"] - df_copy["EMA100"]
+        df_copy["macd50_100_signal"] = (
+            df_copy["macd50_100"].ewm(span=9, adjust=False).mean()
+        )
+        df_copy["bullish"] = df_copy["macd50_100"] > df_copy["macd50_100_signal"]
         return df_copy
 
     @staticmethod
-    def _build_features_of_a_trade(df: pd.DataFrame,
-                                   trade: pd.DataFrame,
-                                   history: int = 10,
-                                   features: Optional[List[str]] = None
-                                   ):
+    def _build_features_of_a_trade(
+        df: pd.DataFrame,
+        trade: pd.DataFrame,
+        history: int = 10,
+        features: Optional[List[str]] = None,
+    ):
 
         if features is None:
             features = FEATURES
 
         # extra_columns
-        extra_columns = ['EntryTime', 'ExitTime']
+        extra_columns = ["EntryTime", "ExitTime"]
 
-        x = pd.DataFrame(columns=[i for i in range(history * len(features))] + extra_columns)
+        x = pd.DataFrame(
+            columns=[i for i in range(history * len(features))] + extra_columns
+        )
         y = pd.DataFrame(columns=["label"] + extra_columns)
 
         if trade.EntryBar >= history:
-            df_history = df.iloc[trade.EntryBar - history: trade.EntryBar]  # entry bar not included
-            x = pd.DataFrame(df_history[features].to_numpy().reshape((1, history * len(features))))
+            df_history = df.iloc[
+                trade.EntryBar - history : trade.EntryBar
+            ]  # entry bar not included
+            x = pd.DataFrame(
+                df_history[features].to_numpy().reshape((1, history * len(features)))
+            )
             y = pd.DataFrame([trade.PnL >= 0])
 
             # add extra columns
@@ -94,16 +103,17 @@ class DatasetBuilder:
                 y[extra] = trade[extra]
 
         else:
-            print(f'Entry Bar {trade.EntryBar} < {history}')
+            print(f"Entry Bar {trade.EntryBar} < {history}")
 
         return x, y
 
-    def _build_features_of_trades_of_a_stock(self,
-                                             df: pd.DataFrame,
-                                             history: int = 10,
-                                             features: Optional[List[str]] = None,
-                                             symbol: str = "MSFT"
-                                             ):
+    def _build_features_of_trades_of_a_stock(
+        self,
+        df: pd.DataFrame,
+        history: int = 10,
+        features: Optional[List[str]] = None,
+        symbol: str = "MSFT",
+    ):
         if features is None:
             features = FEATURES
 
@@ -112,25 +122,19 @@ class DatasetBuilder:
 
         trades = self[self._backtest_results[SYMBOL] == symbol]
         for i, t in trades.iterrows():
-            x_trade, y_trade = self._build_features_of_a_trade(df=df,
-                                                               trade=t,
-                                                               history=history,
-                                                               features=features
-                                                               )
+            x_trade, y_trade = self._build_features_of_a_trade(
+                df=df, trade=t, history=history, features=features
+            )
 
             x = x.append(x_trade)
             y = y.append(y_trade)
 
-        x['Symbol'] = [symbol for _ in range(len(x))]
-        y['Symbol'] = [symbol for _ in range(len(x))]
+        x["Symbol"] = [symbol for _ in range(len(x))]
+        y["Symbol"] = [symbol for _ in range(len(x))]
 
         return x, y
 
-    def build(self,
-              path: str,
-              history: int = 10,
-              features: List[str] = None
-              ):
+    def build(self, path: str, history: int = 10, features: List[str] = None):
 
         x_features = pd.DataFrame()
         y_features = pd.DataFrame()
@@ -141,11 +145,9 @@ class DatasetBuilder:
             df = pd.read_csv(os.path.join(path, s))
             df = self.add_indicators(df)
 
-            x_stock, y_stock = self._build_features_of_trades_of_a_stock(df=df,
-                                                                         symbol=s,
-                                                                         history=history,
-                                                                         features=features
-                                                                         )
+            x_stock, y_stock = self._build_features_of_trades_of_a_stock(
+                df=df, symbol=s, history=history, features=features
+            )
 
             x_features = x_features.append(x_stock)
             y_features = y_features.append(y_stock)

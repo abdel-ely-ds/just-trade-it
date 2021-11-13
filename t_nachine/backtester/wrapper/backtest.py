@@ -6,14 +6,13 @@ from tqdm import tqdm
 
 from t_nachine.backtester.core.backtest import Backtest as BacktestCore
 from t_nachine.backtester.core.strategy import Strategy
-from t_nachine.backtester.wrapper.available_analysis import ANALYSIS_ATTRIBUTES
-from t_nachine.backtester.wrapper.exceptions import AnalysisNotAvailableError
 from t_nachine.backtester.wrapper.utils import (
     post_process_stats,
     pre_process_path,
     pre_process_stock,
     set_log_folder,
 )
+from t_nachine.constants import TRADES
 
 warnings.filterwarnings("ignore")
 LOG_FOLDER = "logs"
@@ -22,40 +21,33 @@ LOG_FOLDER = "logs"
 class Backtest:
     def __init__(
         self,
-        analysis_type: str = "MACRO",
         log_folder: str = LOG_FOLDER,
         cash: int = 20_000,
         commission: int = 0.0,
         exclusive_orders: bool = False,
     ):
 
-        self._bt = BacktestCore(cash=cash, commission=commission, exclusive_orders=exclusive_orders)
-        self._analysis_type = analysis_type
+        self._bt = BacktestCore(
+            cash=cash, commission=commission, exclusive_orders=exclusive_orders
+        )
         self._log_folder = log_folder
-        self._check_analysis()
 
     @property
     def bt(self):
         return self._bt
 
     @property
-    def analysis_type(self):
-        return self._analysis_type
-
-    @property
     def log_folder(self):
         return self._log_folder
 
-    def _check_analysis(self):
-        if self.analysis_type not in ANALYSIS_ATTRIBUTES:
-            raise AnalysisNotAvailableError(self.analysis_type)
+    def _run(
+        self, strategy: Type[Strategy], stock_path: str, symbol: str
+    ) -> pd.DataFrame:
 
-    def _run(self, strategy: Type[Strategy], stock_path: str, symbol: str) -> pd.DataFrame:
-
-        stats = self.bt.run(data=pre_process_stock(pd.read_csv(stock_path)), strategy=strategy)
-        return post_process_stats(
-            stats[ANALYSIS_ATTRIBUTES[self.analysis_type]], symbol
+        stats = self.bt.run(
+            data=pre_process_stock(pd.read_csv(stock_path)), strategy=strategy
         )
+        return post_process_stats(stats[TRADES], symbol)
 
     def run(self, strategy: Type[Strategy], stock_path: str) -> pd.DataFrame:
         """
@@ -74,12 +66,13 @@ class Backtest:
                     self._run(
                         strategy,
                         os.path.join(prefix_path, stock_name),
-                        stock_name.split(".")[0]
+                        stock_name.split(".")[0],
                     )
                 )
             except IndexError:
                 pass
         backtest_results = backtest_results.reset_index(drop=True)
+        backtest_results.drop_duplicates(inplace=True)
         return backtest_results
 
     def log_results(
@@ -97,5 +90,5 @@ class Backtest:
             os.path.join(
                 set_log_folder(log_folder=self._log_folder), backtest_name + ext
             ),
-            index=False
+            index=False,
         )

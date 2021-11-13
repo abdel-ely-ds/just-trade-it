@@ -1,7 +1,7 @@
 import nox
 from nox.sessions import Session
 
-locations = "tradeit", "tests", "noxfile.py"
+locations = "t_nachine", "tests", "noxfile.py"
 nox.options.sessions = "tests", "lint", "build", "blacken"
 nox.options.stop_on_first_error = True
 

@@ -13,18 +13,17 @@ from t_nachine.backtester.core.validate_data import validate_data
 
 
 class Backtest:
-
     def __init__(
-            self,
-            # data: pd.DataFrame,
-            # strategy: Type[Strategy],
-            *,
-            cash: float = 10_000,
-            commission: float = 0.0,
-            margin: float = 1.0,
-            trade_on_close=False,
-            hedging=False,
-            exclusive_orders=False,
+        self,
+        # data: pd.DataFrame,
+        # strategy: Type[Strategy],
+        *,
+        cash: float = 10_000,
+        commission: float = 0.0,
+        margin: float = 1.0,
+        trade_on_close=False,
+        hedging=False,
+        exclusive_orders=False,
     ):
         self._cash = cash
         self._broker = partial(
@@ -35,7 +34,6 @@ class Backtest:
             trade_on_close=trade_on_close,
             hedging=hedging,
             exclusive_orders=exclusive_orders,
-
         )
         self._strategy = None
         self._data = None
@@ -106,31 +104,33 @@ class Backtest:
             # for future `indicator._opts['data'].index` calls to work
             data._set_length(len(self._data))
 
-            self._results = self._stats.compute_stats(data=self._data,
-                                                      equity=broker.equity,
-                                                      trades=broker.closed_trades,
-                                                      strategy=strategy,
-                                                      cash=broker._cash)
+            self._results = self._stats.compute_stats(
+                data=self._data,
+                equity=broker.equity,
+                trades=broker.closed_trades,
+                strategy=strategy,
+                cash=broker._cash,
+            )
         return self._results
 
     def plot(
-            self,
-            *,
-            results: pd.Series = None,
-            filename=None,
-            plot_width=None,
-            plot_equity=True,
-            plot_return=False,
-            plot_pl=True,
-            plot_volume=True,
-            plot_drawdown=False,
-            smooth_equity=False,
-            relative_equity=True,
-            superimpose: Union[bool, str] = True,
-            resample=True,
-            reverse_indicators=False,
-            show_legend=True,
-            open_browser=True,
+        self,
+        *,
+        results: pd.Series = None,
+        filename=None,
+        plot_width=None,
+        plot_equity=True,
+        plot_return=False,
+        plot_pl=True,
+        plot_volume=True,
+        plot_drawdown=False,
+        smooth_equity=False,
+        relative_equity=True,
+        superimpose: Union[bool, str] = True,
+        resample=True,
+        reverse_indicators=False,
+        show_legend=True,
+        open_browser=True,
     ):
         if results is None:
             if self._results is None:

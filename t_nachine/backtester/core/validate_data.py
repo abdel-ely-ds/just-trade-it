@@ -3,18 +3,17 @@ import numpy as np
 import warnings
 
 
-def validate_data(data: pd.DataFrame,
-                  cash: float):
+def validate_data(data: pd.DataFrame, cash: float):
     # Convert index to datetime index
     data = data.copy(deep=False)
     if (
-            not data.index.is_all_dates
-            and not isinstance(data.index, pd.RangeIndex)
-            # Numeric index with most large numbers
-            and (
+        not data.index.is_all_dates
+        and not isinstance(data.index, pd.RangeIndex)
+        # Numeric index with most large numbers
+        and (
             data.index.is_numeric()
             and (data.index > pd.Timestamp("1975").timestamp()).mean() > 0.8
-    )
+        )
     ):
         try:
             data.index = pd.to_datetime(data.index, infer_datetime_format=True)

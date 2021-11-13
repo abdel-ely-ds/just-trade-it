@@ -1,17 +1,4 @@
-from t_nachine.backtester.wrapper.available_analysis import ANALYSIS_ATTRIBUTES
-from t_nachine.backtester.wrapper.exception_messages import (
-    ANALYSIS_NOT_AVAILABLE_MESSAGE,
-    BACKTEST_NAME_ALREADY_EXISTS,
-)
-
-
-class AnalysisNotAvailableError(Exception):
-    def __init__(self, analysis_type, message=ANALYSIS_NOT_AVAILABLE_MESSAGE):
-        self.analysis_type = analysis_type
-        self.message = message
-        super().__init__(
-            self.message.format(self.analysis_type, ANALYSIS_ATTRIBUTES.keys())
-        )
+from t_nachine.backtester.wrapper.exception_messages import BACKTEST_NAME_ALREADY_EXISTS
 
 
 class BackTestNameAlreadyExists(Exception):

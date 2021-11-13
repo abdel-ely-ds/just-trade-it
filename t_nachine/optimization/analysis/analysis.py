@@ -33,6 +33,13 @@ class Analyzer:
         columns = [DURATION, RISK_TO_REWARD]
         return self._backtest_results.groupby(WINNING)[columns].agg(func)
 
+    def winning_streak_probability(self, n: int = 10) -> float:
+        return round(self.win_rate ** n, 3)
+
+    def losing_streak_probability(self, n: int = 10) -> float:
+        p = 1 - self.win_rate
+        return round(p ** n, 3)
+
     def missed_tp_by(self) -> pd.Series:
         """
         Computes maximum positive pnl of losing trades
@@ -171,7 +178,9 @@ class Analyzer:
         return pd.Series(trades_returns).cumsum()
 
     def _enrich_results(self) -> None:
-        self._backtest_results[DURATION] = self._backtest_results[EXIT_BAR] - self._backtest_results[ENTRY_BAR]
+        self._backtest_results[DURATION] = (
+            self._backtest_results[EXIT_BAR] - self._backtest_results[ENTRY_BAR]
+        )
         self._backtest_results[WINNING] = self._backtest_results[PNL] > 0
         self._backtest_results[RISK_TO_REWARD] = (
             self._backtest_results[EXIT_PRICE] - self._backtest_results[ENTRY_PRICE]
