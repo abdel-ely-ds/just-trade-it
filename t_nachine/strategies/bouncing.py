@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from typing import List
 
 import numpy as np
@@ -7,7 +8,7 @@ from t_nachine.candlesticks import Candle
 from t_nachine.indicators import ema
 from t_nachine.patterns import AnyReversalPattern
 from t_nachine.risk import RiskManger
-from t_nachine.strategies.utils import add_attrs, get_candles
+from t_nachine.strategies.utils import add_attrs, get_candles, build_attr_dict
 
 UP_DAYS = 20
 WAIT = 1
@@ -18,7 +19,6 @@ RISK_TO_REWARD = 2.0
 class Bouncing(Strategy):
     def init(self):
         # data and indicators
-        price = self.data.Close
         self.ema18 = self.I(ema, self.data, 18)
         self.ema50 = self.I(ema, self.data, 50)
         self.ema100 = self.I(ema, self.data, 100)
@@ -33,15 +33,15 @@ class Bouncing(Strategy):
         )
 
     def cancel(
-        self,
+            self,
     ) -> None:
         """
         wait until <self.wait> days then cancel order if not executed
         """
         for order in self.orders:
             if (
-                not order.is_contingent
-                and len(self.data) - order.placed_bar >= self.wait
+                    not order.is_contingent
+                    and len(self.data) - order.placed_bar >= self.wait
             ):
                 order.cancel()
 
@@ -77,13 +77,13 @@ class Bouncing(Strategy):
             [bool]: true if confirmed
         """
         return (
-            candle0.low > candle1.low
-            and candle0.close > candle1.high
-            and candle0.bull()
+                candle0.low > candle1.low
+                and candle0.close > candle1.high
+                and candle0.bull()
         )
 
     def buy_signal(
-        self, candle0: Candle, candle1: Candle, candle2: Candle, support: List[float]
+            self, candle0: Candle, candle1: Candle, candle2: Candle, support: List[float]
     ) -> bool:
         """
         buy signal
@@ -111,24 +111,22 @@ class Bouncing(Strategy):
         # cancel pending orders
         self.cancel()
 
-        # add attribute
+        # add attributes
         for trade in self.trades:
             add_attrs(
                 trade=trade,
                 high=self.data.High[-1],
                 low=self.data.Low[-1],
-                volume=self.data.Volume[-1],
+                **build_attr_dict(self.data),
             )
 
         try:
-
-            supports = {
-                200: [self.ema200[-1], self.ema200[-2], self.ema200[-3]],
-                100: [self.ema100[-1], self.ema100[-2], self.ema100[-3]],
-                50: [self.ema50[-1], self.ema50[-2], self.ema50[-3]],
-                150: [self.ema150[-1], self.ema150[-2], self.ema150[-3]],
-                18: [self.ema18[-1], self.ema18[-2], self.ema18[-3]],
-            }
+            supports = OrderedDict(
+                [(200, [self.ema200[-1], self.ema200[-2], self.ema200[-3]]),
+                 (150, [self.ema150[-1], self.ema150[-2], self.ema150[-3]]),
+                 (100, [self.ema100[-1], self.ema100[-2], self.ema100[-3]]),
+                 (50, [self.ema50[-1], self.ema50[-2], self.ema50[-3]])]
+            )
 
             (
                 candle0,
@@ -144,7 +142,6 @@ class Bouncing(Strategy):
                         above_price=candle0.high, below_price=candle1.low
                     )
                     size = self.risk_manager.shares(self.equity, stop, sl)
-
                     order = self.buy(stop=stop, limit=limit, sl=sl, tp=tp, size=size)
                     setattr(order, "placed_time", self.data.index[-1])
                     setattr(order, "placed_bar", len(self.data))

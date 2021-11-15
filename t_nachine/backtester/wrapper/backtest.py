@@ -12,7 +12,7 @@ from t_nachine.backtester.wrapper.utils import (
     pre_process_stock,
     set_log_folder,
 )
-from t_nachine.constants import TRADES, ENTRY_BAR, EXIT_BAR, SIZE, VOLUME
+from t_nachine.constants import TRADES
 
 warnings.filterwarnings("ignore")
 LOG_FOLDER = "logs"
@@ -47,8 +47,7 @@ class Backtest:
         stats = self.bt.run(
             data=pre_process_stock(pd.read_csv(stock_path)), strategy=strategy
         )
-        return stats
-        return post_process_stats(stats, symbol)
+        return post_process_stats(stats[TRADES], symbol)
 
     def run(self, strategy: Type[Strategy], stock_path: str) -> pd.DataFrame:
         """
@@ -74,10 +73,6 @@ class Backtest:
                 pass
         backtest_results = backtest_results.reset_index(drop=True)
         backtest_results.drop_duplicates(inplace=True)
-        backtest_results[ENTRY_BAR] = backtest_results[ENTRY_BAR].astype(int)
-        backtest_results[EXIT_BAR] = backtest_results[EXIT_BAR].astype(int)
-        backtest_results[SIZE] = backtest_results[SIZE].astype(int)
-        backtest_results[VOLUME] = backtest_results[VOLUME].astype(int)
         return backtest_results
 
     def log_results(

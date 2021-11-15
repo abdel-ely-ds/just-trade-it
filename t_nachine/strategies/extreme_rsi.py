@@ -3,7 +3,7 @@ from t_nachine.candlesticks import Candle
 from t_nachine.indicators import rsi
 from t_nachine.patterns import BullBearPattern
 from t_nachine.risk import RiskManger
-from t_nachine.strategies.utils import add_attrs, get_candles
+from t_nachine.strategies.utils import add_attrs, get_candles, build_attr_dict
 
 WAIT = 1
 RISK_PER_TRADE = 0.01
@@ -62,7 +62,7 @@ class ExtremeRSI(Strategy):
                 trade=trade,
                 high=self.data.High[-1],
                 low=self.data.Low[-1],
-                volume=self.data.Volume[-1],
+                **build_attr_dict(self.data),
             )
 
         try:
