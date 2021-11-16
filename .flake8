@@ -3,5 +3,5 @@ select = B, B9, BLK, C, E, F, I, W
 ignore = E203, E501, W503, B010, E743, B011,  BLK100, B305, E741,  B008, E712
 application-import-names = {{cookiecutter.project_slug}}, tests
 import-order-style = google
-max-line-length = 120
+max-line-length = 121
 exclude =.git, __pycache__, __init__.py,
