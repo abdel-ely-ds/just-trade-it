@@ -6,7 +6,7 @@ setup(
     name="t_nachine",
     author="Abdellah EL YOUNSI",
     author_email="abdel.ely.ds@gmail.com",
-    url="https://github.com/abdel-ely-ds/trading-pytrader",
+    url="https://github.com/abdel-ely-ds/just-trade-it",
     keywords="core",
     license="MIT",
     description="backtest strategies",
