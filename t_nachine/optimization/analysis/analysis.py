@@ -28,6 +28,27 @@ class Analyzer:
         return self._backtest_results[WINNING].mean()
 
     @property
+    def best_trade(self) -> float:
+        return self._backtest_results[PNL].max()
+
+    @property
+    def worst_trade(self) -> float:
+        return self._backtest_results[PNL].min()
+
+    @property
+    def profit_factor(self) -> float:
+        try:
+            self._backtest_results[self._backtest_results[PNL] > 0][
+                PNL
+            ].sum() / self._backtest_results[self._backtest_results[PNL] < 0][PNL].sum()
+        except ZeroDivisionError:
+            return None
+
+    @property
+    def nb_trades(self) -> float:
+        return len(nb_trades)
+
+    @property
     def stats(self) -> pd.DataFrame:
         func = [MEAN, MEDIAN, MIN, MAX, STD]
         columns = [DURATION, RISK_TO_REWARD]

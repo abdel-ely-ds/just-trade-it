@@ -86,6 +86,6 @@ def build_attr_dict(data: pd.DataFrame, features: List[str] = None) -> Dict[str,
         try:
             attr_dict[feature] = data[feature][-1]
         except KeyError:
-            print(f'feature: {feature} does not exist')
+            print(f"feature: {feature} does not exist")
             pass
     return attr_dict

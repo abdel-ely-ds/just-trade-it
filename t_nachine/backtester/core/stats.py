@@ -27,7 +27,7 @@ class Stats(pd.Series):
 
     @staticmethod
     def compute_stats(
-            data: pd.DataFrame, equity, trades: List[Trade], strategy: Strategy, cash: float
+        data: pd.DataFrame, equity, trades: List[Trade], strategy: Strategy, cash: float
     ) -> Stats:
 
         index = data.index
@@ -39,21 +39,21 @@ class Stats(pd.Series):
             index=index,
         )
         trades_dict = {
-                "Size": [t.size for t in trades],
-                "EntryBar": [t.entry_bar for t in trades],
-                "ExitBar": [t.exit_bar for t in trades],
-                "OneR": [t.one_r for t in trades],
-                "SlPrice": [t.sl for t in trades],
-                "TpPrice": [t.tp for t in trades],
-                "EntryPrice": [t.entry_price for t in trades],
-                "ExitPrice": [t.exit_price for t in trades],
-                "MaxPnL": [t.max_pnl for t in trades],
-                "MaxNegativePnl": [t.max_negative_pnl for t in trades],
-                "PnL": [t.pl for t in trades],
-                "ReturnPct": [t.pl_pct for t in trades],
-                "EntryTime": [t.entry_time for t in trades],
-                "ExitTime": [t.exit_time for t in trades],
-            }
+            "Size": [t.size for t in trades],
+            "EntryBar": [t.entry_bar for t in trades],
+            "ExitBar": [t.exit_bar for t in trades],
+            "OneR": [t.one_r for t in trades],
+            "SlPrice": [t.sl for t in trades],
+            "TpPrice": [t.tp for t in trades],
+            "EntryPrice": [t.entry_price for t in trades],
+            "ExitPrice": [t.exit_price for t in trades],
+            "MaxPnL": [t.max_pnl for t in trades],
+            "MaxNegativePnl": [t.max_negative_pnl for t in trades],
+            "PnL": [t.pl for t in trades],
+            "ReturnPct": [t.pl_pct for t in trades],
+            "EntryTime": [t.entry_time for t in trades],
+            "ExitTime": [t.exit_time for t in trades],
+        }
         for feature in TRADES_ATTRIBUTES:
             try:
                 trades_dict[feature] = [getattr(t, feature) for t in trades]
@@ -72,10 +72,10 @@ class Stats(pd.Series):
 
         have_position = np.repeat(0, len(index))
         for t in trades:
-            have_position[t.entry_bar: t.exit_bar + 1] = 1  # type: ignore
+            have_position[t.entry_bar : t.exit_bar + 1] = 1  # type: ignore
 
         s.loc["Exposure Time [%]"] = (
-                have_position.mean() * 100
+            have_position.mean() * 100
         )  # In "n bars" time, not index time
         s.loc["Equity Final [$]"] = equity[-1]
         s.loc["Equity Peak [$]"] = equity.max()
@@ -96,15 +96,15 @@ class Stats(pd.Series):
         annualized_return = (1 + gmean_day_return) ** annual_trading_days - 1
         s.loc["Return (Ann.) [%]"] = annualized_return * 100
         s.loc["Volatility (Ann.) [%]"] = (
-                np.sqrt(
-                    (
-                            day_returns.var(ddof=int(bool(day_returns.shape)))
-                            + (1 + gmean_day_return) ** 2
-                    )
-                    ** annual_trading_days
-                    - (1 + gmean_day_return) ** (2 * annual_trading_days)
+            np.sqrt(
+                (
+                    day_returns.var(ddof=int(bool(day_returns.shape)))
+                    + (1 + gmean_day_return) ** 2
                 )
-                * 100
+                ** annual_trading_days
+                - (1 + gmean_day_return) ** (2 * annual_trading_days)
+            )
+            * 100
         )  # noqa: E501
         # s.loc['Return (Ann.) [%]'] = gmean_day_return * annual_trading_days * 100
         # s.loc['Risk (Ann.) [%]'] = day_returns.std(ddof=1) * np.sqrt(annual_trading_days) * 100
@@ -120,8 +120,8 @@ class Stats(pd.Series):
         s.loc["Sortino Ratio"] = np.clip(
             annualized_return
             / (
-                    np.sqrt(np.mean(day_returns.clip(-np.inf, 0) ** 2))
-                    * np.sqrt(annual_trading_days)
+                np.sqrt(np.mean(day_returns.clip(-np.inf, 0) ** 2))
+                * np.sqrt(annual_trading_days)
             ),
             0,
             np.inf,
@@ -134,11 +134,11 @@ class Stats(pd.Series):
         s.loc["Worst Trade [%]"] = returns.min() * 100
         mean_return = geometric_mean(returns)
         s.loc["Profit Factor"] = returns[returns > 0].sum() / (
-                abs(returns[returns < 0].sum()) or np.nan
+            abs(returns[returns < 0].sum()) or np.nan
         )  # noqa: E501
         s.loc["Expectancy [%]"] = returns[returns > 0].mean() * win_rate + returns[
             returns < 0
-            ].mean() * (100 - win_rate)
+        ].mean() * (100 - win_rate)
         s.loc["SQN"] = np.sqrt(n_trades) * pl.mean() / (pl.std() or np.nan)
         s.loc["_strategy"] = strategy
         s.loc["_equity_curve"] = equity_df

@@ -33,15 +33,15 @@ class Bouncing(Strategy):
         )
 
     def cancel(
-            self,
+        self,
     ) -> None:
         """
         wait until <self.wait> days then cancel order if not executed
         """
         for order in self.orders:
             if (
-                    not order.is_contingent
-                    and len(self.data) - order.placed_bar >= self.wait
+                not order.is_contingent
+                and len(self.data) - order.placed_bar >= self.wait
             ):
                 order.cancel()
 
@@ -77,13 +77,13 @@ class Bouncing(Strategy):
             [bool]: true if confirmed
         """
         return (
-                candle0.low > candle1.low
-                and candle0.close > candle1.high
-                and candle0.bull()
+            candle0.low > candle1.low
+            and candle0.close > candle1.high
+            and candle0.bull()
         )
 
     def buy_signal(
-            self, candle0: Candle, candle1: Candle, candle2: Candle, support: List[float]
+        self, candle0: Candle, candle1: Candle, candle2: Candle, support: List[float]
     ) -> bool:
         """
         buy signal
@@ -122,10 +122,12 @@ class Bouncing(Strategy):
 
         try:
             supports = OrderedDict(
-                [(200, [self.ema200[-1], self.ema200[-2], self.ema200[-3]]),
-                 (150, [self.ema150[-1], self.ema150[-2], self.ema150[-3]]),
-                 (100, [self.ema100[-1], self.ema100[-2], self.ema100[-3]]),
-                 (50, [self.ema50[-1], self.ema50[-2], self.ema50[-3]])]
+                [
+                    (200, [self.ema200[-1], self.ema200[-2], self.ema200[-3]]),
+                    (150, [self.ema150[-1], self.ema150[-2], self.ema150[-3]]),
+                    (100, [self.ema100[-1], self.ema100[-2], self.ema100[-3]]),
+                    (50, [self.ema50[-1], self.ema50[-2], self.ema50[-3]]),
+                ]
             )
 
             (
