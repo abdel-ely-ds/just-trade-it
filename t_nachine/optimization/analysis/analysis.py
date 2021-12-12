@@ -25,28 +25,45 @@ class Analyzer:
 
     @property
     def win_rate(self) -> float:
-        return self._backtest_results[WINNING].mean()
+        return round(self._backtest_results[WINNING].mean(), 2)
 
     @property
     def best_trade(self) -> float:
-        return self._backtest_results[PNL].max()
+        return round(self._backtest_results[PNL].max(), 2)
+    
+    @property
+    def average_exposure_time(self) -> float:
+        return round(self._backtest_results[DURATION].mean(), 2)
+    
+    @property
+    def first_entry_time(self) -> float:
+        return self._backtest_results[ENTRY_TIME].min()
+    
+    @property
+    def last_entry_time(self) -> float:
+        return self._backtest_results[ENTRY_TIME].max()
 
     @property
     def worst_trade(self) -> float:
-        return self._backtest_results[PNL].min()
+        return round(self._backtest_results[PNL].min(), 2)
 
     @property
     def profit_factor(self) -> float:
         try:
-            self._backtest_results[self._backtest_results[PNL] > 0][
+            return round(self._backtest_results[self._backtest_results[PNL] > 0][
                 PNL
-            ].sum() / self._backtest_results[self._backtest_results[PNL] < 0][PNL].sum()
+            ].sum() / abs(self._backtest_results[self._backtest_results[PNL] < 0][PNL].sum()), 2)
         except ZeroDivisionError:
             return None
+        
+    @property
+    def pct_return(self, capital: float = 10_000):
+        final_balance = self._backtest_results[PNL].sum()
+        return (final_balance + capital) / capital
 
     @property
     def nb_trades(self) -> float:
-        return len(nb_trades)
+        return len(self._backtest_results)
 
     @property
     def stats(self) -> pd.DataFrame:
