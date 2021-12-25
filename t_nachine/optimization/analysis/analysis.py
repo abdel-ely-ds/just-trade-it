@@ -59,7 +59,7 @@ class Analyzer:
     @property
     def pct_return(self, capital: float = 10_000):
         final_balance = self._backtest_results[PNL].sum()
-        return (final_balance + capital) / capital
+        return round((final_balance + capital) / capital, 2)
 
     @property
     def nb_trades(self) -> float:
@@ -72,11 +72,11 @@ class Analyzer:
         return self._backtest_results.groupby(WINNING)[columns].agg(func)
 
     def winning_streak_probability(self, n: int = 10) -> float:
-        return round(self.win_rate ** n, 3)
+        return round(self.win_rate ** n, 2)
 
     def losing_streak_probability(self, n: int = 10) -> float:
         p = 1 - self.win_rate
-        return round(p ** n, 3)
+        return round(p ** n, 2)
 
     def missed_tp_by(self) -> pd.Series:
         """

@@ -46,7 +46,7 @@ class ExtremeRSI(Strategy):
         Returns:
             bool: is buy signal triggered
         """
-
+        
         rsi_below_10 = self.rsi[-2] < self.rsi_thresh
         is_bull_bear = BullBearPattern(candle=candle0, pre_candle=candle1)
 

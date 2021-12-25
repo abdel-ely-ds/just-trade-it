@@ -13,7 +13,7 @@ from t_nachine.strategies.utils import add_attrs, get_candles, build_attr_dict
 UP_DAYS = 20
 WAIT = 1
 RISK_PER_TRADE = 0.01
-RISK_TO_REWARD = 2.0
+RISK_TO_REWARD = 3.0
 
 
 class Bouncing(Strategy):
@@ -127,6 +127,7 @@ class Bouncing(Strategy):
                     (150, [self.ema150[-1], self.ema150[-2], self.ema150[-3]]),
                     (100, [self.ema100[-1], self.ema100[-2], self.ema100[-3]]),
                     (50, [self.ema50[-1], self.ema50[-2], self.ema50[-3]]),
+                    (18, [self.ema18[-1], self.ema18[-2], self.ema18[-3]])
                 ]
             )
 
@@ -143,7 +144,9 @@ class Bouncing(Strategy):
                     stop, limit, sl, tp = self.risk_manager.compute_entry_exit(
                         above_price=candle0.high, below_price=candle1.low
                     )
+                    sl = limit - 1.3 * (limit - sl)
                     size = self.risk_manager.shares(self.equity, stop, sl)
+                    sl = 0.5 * sl
                     order = self.buy(stop=stop, limit=limit, sl=sl, tp=tp, size=size)
                     setattr(order, "placed_time", self.data.index[-1])
                     setattr(order, "placed_bar", len(self.data))

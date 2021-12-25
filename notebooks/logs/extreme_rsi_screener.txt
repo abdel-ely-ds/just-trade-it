@@ -1,0 +1,25 @@
+date is: 2021-12-21, buy trigged for symbol: rcl.us.txt, Model saying is a False signal with a probability of 0.53
+date is: 2021-12-21, buy trigged for symbol: expe.us.txt, Model saying is a True signal with a probability of 0.758
+date is: 2021-12-21, buy trigged for symbol: bl.us.txt, Model saying is a False signal with a probability of 0.383
+date is: 2021-12-21, buy trigged for symbol: pni.us.txt, Model saying is a False signal with a probability of 0.085
+date is: 2021-12-21, buy trigged for symbol: cabo.us.txt, Model saying is a True signal with a probability of 0.754
+date is: 2021-12-21, buy trigged for symbol: zen.us.txt, Model saying is a False signal with a probability of 0.372
+date is: 2021-12-21, buy trigged for symbol: jbgs.us.txt, Model saying is a False signal with a probability of 0.429
+date is: 2021-12-21, buy trigged for symbol: imrn.us.txt, Model saying is a False signal with a probability of 0.318
+date is: 2021-12-21, buy trigged for symbol: ccl.us.txt, Model saying is a True signal with a probability of 0.801
+date is: 2021-12-21, buy trigged for symbol: aeri.us.txt, Model saying is a False signal with a probability of 0.238
+date is: 2021-12-21, buy trigged for symbol: ltrpb.us.txt, Model saying is a False signal with a probability of 0.534
+date is: 2021-12-21, buy trigged for symbol: glbl.us.txt, Model saying is a False signal with a probability of 0.386
+date is: 2021-12-21, buy trigged for symbol: dit.us.txt, Model saying is a False signal with a probability of 0.601
+date is: 2021-12-21, buy trigged for symbol: zsan.us.txt, Model saying is a False signal with a probability of 0.571
+date is: 2021-12-21, buy trigged for symbol: chsco.us.txt, Model saying is a False signal with a probability of 0.475
+date is: 2021-12-21, buy trigged for symbol: ctv.us.txt, Model saying is a False signal with a probability of 0.556
+date is: 2021-12-21, buy trigged for symbol: cptag.us.txt, Model saying is a False signal with a probability of 0.302
+date is: 2021-12-21, buy trigged for symbol: nakd.us.txt, Model saying is a False signal with a probability of 0.462
+date is: 2021-12-21, buy trigged for symbol: fcco.us.txt, Model saying is a False signal with a probability of 0.24
+date is: 2021-12-21, buy trigged for symbol: hyxu.us.txt, Model saying is a False signal with a probability of 0.595
+date is: 2021-12-21, buy trigged for symbol: beat.us.txt, Model saying is a False signal with a probability of 0.432
+date is: 2021-12-21, buy trigged for symbol: micr.us.txt, Model saying is a True signal with a probability of 0.97
+
+--------------------------------------------------------------------------------------
+
